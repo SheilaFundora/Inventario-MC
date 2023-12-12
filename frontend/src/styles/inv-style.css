@@ -1,0 +1,14 @@
+.link-sidebar{
+    color: black;
+    width: 100%;
+    text-decoration: none;
+}
+.link-sidebar:hover{
+    color: dodgerblue;
+}.link-sidebar:active{
+    color: dodgerblue;
+}
+
+.active {
+    color: dodgerblue;
+}
