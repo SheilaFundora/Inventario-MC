@@ -18,11 +18,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Link from "next/link";
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import React, {useEffect, useState} from "react";
-import Image from "next/image";
+import React from "react";
 import {usePathname} from "next/navigation";
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import CalculateIcon from '@mui/icons-material/Calculate';
 
-const drawerWidth = 230;
+const drawerWidth = 200;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -113,7 +115,7 @@ export default function PersistentDrawerLeft({children}) {
                         </IconButton>
                         <div className='d-flex w-100 align-items-center justify-content-between'>
                             <Typography variant='h6' noWrap component='div'>
-                               Inventario
+                                CrisInventario
                             </Typography>
 
                         </div>
@@ -161,38 +163,38 @@ export default function PersistentDrawerLeft({children}) {
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link href={'/dashboard/'}
-                                  className={`link-sidebar ${pathname === '/dashboard' ? 'active' : ''}`}
+                            <Link href={'/dashboard/producto/'}
+                                  className={`link-sidebar ${pathname === '/dashboard/producto/' ? 'active' : ''}`}
                             >
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        <DashboardIcon />
+                                        <ProductionQuantityLimitsIcon />
                                     </ListItemIcon>
-                                    <ListItemText>Inicio</ListItemText>
+                                    <ListItemText>Producto</ListItemText>
                                 </ListItemButton>
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link href={'/dashboard/'}
-                                  className={`link-sidebar ${pathname === '/dashboard' ? 'active' : ''}`}
+                            <Link href={'/dashboard/ipv/'}
+                                  className={`link-sidebar ${pathname === '/dashboard/ipv' ? 'active' : ''}`}
                             >
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        <DashboardIcon />
+                                        <CalculateIcon />
                                     </ListItemIcon>
-                                    <ListItemText>Inicio</ListItemText>
+                                    <ListItemText>IPV</ListItemText>
                                 </ListItemButton>
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
-                            <Link href={'/dashboard/'}
-                                  className={`link-sidebar ${pathname === '/dashboard' ? 'active' : ''}`}
+                            <Link href={'/dashboard/resumen/'}
+                                  className={`link-sidebar ${pathname === '/dashboard/resumen' ? 'active' : ''}`}
                             >
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        <DashboardIcon />
+                                        <LibraryBooksIcon />
                                     </ListItemIcon>
-                                    <ListItemText>Inicio</ListItemText>
+                                    <ListItemText>Resumen</ListItemText>
                                 </ListItemButton>
                             </Link>
                         </ListItem>
