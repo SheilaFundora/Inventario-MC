@@ -1,8 +1,19 @@
+'use client'
+import {useRouter} from "next/navigation";
+import {useEffect} from "react";
+import Loading from "@/components/Loading";
+
 
 export default function Home() {
-  return (
-    <div>
-        <h1>Home page</h1>
-    </div>
-  )
+    const router = useRouter();
+
+    useEffect( () => {
+        return router.push('/dashboard');
+    }, [])
+
+    return (
+        <div className={'pt-5'}>
+            <Loading infoText={'Cargando ...'} />
+        </div>
+    )
 }

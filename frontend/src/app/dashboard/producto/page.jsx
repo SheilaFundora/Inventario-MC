@@ -9,6 +9,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import {InputText} from "primereact/inputtext";
+import AddProduct from "@/app/dashboard/producto/addProduct";
 
 
 const productos = [
@@ -22,7 +23,11 @@ const productos = [
 export default function BasicCard() {
     const [globalFilter, setGlobalFilter] = useState('');
     const [loading, setLoading] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
 
+    const handleOpenDialog = () => {
+        setOpenDialog(!openDialog)
+    }
 
     const actionBodyTemplate = (rowData) => {
         return (
@@ -38,11 +43,9 @@ export default function BasicCard() {
     }
 
     return (
-
         <div className={'pt-2'}>
-            <Button variant="contained" className={'float-end'}>+ Agregar Producto</Button>
+            <Button variant="contained" className={'float-end'} onClick={handleOpenDialog}>+ Agregar Producto</Button>
             <h4 className={'pt-5 text-secondary ms-1'}>Productos</h4>
-
 
             <div className={'d-flex align-items-end justify-content-between mt-4'}>
                 <InputText
@@ -70,8 +73,9 @@ export default function BasicCard() {
                 </DataTable>
             </div>
 
+            <AddProduct openDialog={openDialog} handleOpenDialog={handleOpenDialog} />
+
 
         </div>
-
     );
 }
