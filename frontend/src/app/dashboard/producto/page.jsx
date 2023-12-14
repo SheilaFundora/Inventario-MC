@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from "@mui/material/Button";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
@@ -10,20 +10,36 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import {InputText} from "primereact/inputtext";
 import AddProduct from "@/app/dashboard/producto/addProduct";
-
-
-const productos = [
-    { nombre: 'Café Americano', precio: 2.50, cantidad: 100 },
-    { nombre: 'Croissant de Chocolate', precio: 3.50, cantidad: 50 },
-    { nombre: 'Té Verde', precio: 2.00, cantidad: 80 },
-    { nombre: 'Muffin de Arándanos', precio: 4.00, cantidad: 40 },
-    { nombre: 'Cappuccino', precio: 3.00, cantidad: 60 }
-];
+import {add_product} from "@/constants/apiRoutes";
+import axios from "axios";
 
 export default function BasicCard() {
     const [globalFilter, setGlobalFilter] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [openDialog, setOpenDialog] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [refreshProducts, setRefreshProducts] = React.useState(false)
+
+
+    const handleRefreshProducts = () => {
+        setRefreshProducts(!refreshProducts)
+    }
+
+    useEffect( () => {
+        getProducts();
+
+    }, [refreshProducts])
+
+    const getProducts = async () => {
+        await axios.get(
+            process.env.NEXT_PUBLIC_API_HOST + add_product
+        )
+            .then(response => {
+                setProducts(response.data);
+            })
+
+        setLoading(!loading);
+    }
 
     const handleOpenDialog = () => {
         setOpenDialog(!openDialog)
@@ -58,7 +74,7 @@ export default function BasicCard() {
             <br/>
 
             <div className="datatable">
-                <DataTable value={productos}
+                <DataTable value={products}
                            paginator rows={5}
                            rowsPerPageOptions={[5, 10, 25, 50]}
                            tableStyle={{minWidth: '50rem'}}
@@ -73,7 +89,12 @@ export default function BasicCard() {
                 </DataTable>
             </div>
 
-            <AddProduct openDialog={openDialog} handleOpenDialog={handleOpenDialog} />
+            <AddProduct openDialog={openDialog}
+                        handleOpenDialog={handleOpenDialog}
+                        handleRefreshProducts={handleRefreshProducts}
+                        setLoading={setLoading}
+                        loading={loading}
+            />
 
 
         </div>
