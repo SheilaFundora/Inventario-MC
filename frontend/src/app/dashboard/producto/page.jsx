@@ -1,25 +1,22 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import Button from "@mui/material/Button";
-import {DataTable} from "primereact/datatable";
-import {Column} from "primereact/column";
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import {InputText} from "primereact/inputtext";
-import AddProduct from "@/app/dashboard/producto/addProduct";
-import {add_product} from "@/constants/apiRoutes";
+import AddProduct from "@/app/dashboard/producto/AddProduct";
+import {product} from "@/constants/apiRoutes";
 import axios from "axios";
+import DataTableProducts from "@/app/dashboard/producto/DataTableProducts";
 
 export default function BasicCard() {
-    const [globalFilter, setGlobalFilter] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openAddProduct, setOpenAddProduct] = useState(false);
     const [products, setProducts] = useState([]);
     const [refreshProducts, setRefreshProducts] = React.useState(false)
+    const [loading, setLoading] = useState(true);
 
+    const handleOpenAddProduct = () => {
+        setOpenAddProduct(!openAddProduct);
+    }
 
     const handleRefreshProducts = () => {
         setRefreshProducts(!refreshProducts)
@@ -32,7 +29,7 @@ export default function BasicCard() {
 
     const getProducts = async () => {
         await axios.get(
-            process.env.NEXT_PUBLIC_API_HOST + add_product
+            process.env.NEXT_PUBLIC_API_HOST + product
         )
             .then(response => {
                 setProducts(response.data);
@@ -41,61 +38,23 @@ export default function BasicCard() {
         setLoading(!loading);
     }
 
-    const handleOpenDialog = () => {
-        setOpenDialog(!openDialog)
-    }
-
-    const actionBodyTemplate = (rowData) => {
-        return (
-            <>
-                <IconButton size="large" className="text-warning" onClick={() => confirmEditProduct(rowData.id)}>
-                    <EditIcon fontSize="inherit" />
-                </IconButton>
-                <IconButton size="large" color="error" >
-                    <DeleteForeverIcon  fontSize="inherit" />
-                </IconButton>
-            </>
-        )
-    }
-
     return (
         <div className={'pt-2'}>
-            <Button variant="contained" className={'float-end'} onClick={handleOpenDialog}>+ Agregar Producto</Button>
+            <Button variant="contained" className={'float-end'} onClick={handleOpenAddProduct}>+ Agregar Producto</Button>
+
             <h4 className={'pt-5 text-secondary ms-1'}>Productos</h4>
+            <DataTableProducts products={products}
+                               handleRefreshProducts={handleRefreshProducts}
+                               setLoading={setLoading}
+                               loading={loading}
+            />
 
-            <div className={'d-flex align-items-end justify-content-between mt-4'}>
-                <InputText
-                    value={globalFilter}
-                    onChange={(e) => setGlobalFilter(e.target.value)}
-                    placeholder="Filtrar..."
-                    sx={{mb: 3}}
-                />
-            </div>
-            <br/>
-
-            <div className="datatable">
-                <DataTable value={products}
-                           paginator rows={5}
-                           rowsPerPageOptions={[5, 10, 25, 50]}
-                           tableStyle={{minWidth: '50rem'}}
-                           globalFilter={globalFilter}
-                           loading={loading}
-                           className="p-datatable-hgridlines"
-                >
-                    <Column field="nombre" header="Nombre" style={{width: '25%'}}></Column>
-                    <Column field="precio" header="Precio" sortable style={{width: '25%'}}></Column>
-                    <Column field="cantidad" header="Cantidad" sortable style={{width: '25%'}}></Column>
-                    <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
-                </DataTable>
-            </div>
-
-            <AddProduct openDialog={openDialog}
-                        handleOpenDialog={handleOpenDialog}
+            <AddProduct openAddProduct={openAddProduct}
+                        handleOpenAddProduct={handleOpenAddProduct}
                         handleRefreshProducts={handleRefreshProducts}
                         setLoading={setLoading}
                         loading={loading}
             />
-
 
         </div>
     );

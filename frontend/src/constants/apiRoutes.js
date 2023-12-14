@@ -1,4 +1,4 @@
-export const add_product = '/api/cafeteria/producto'
+export const product = '/api/cafeteria/producto'
 
 
 

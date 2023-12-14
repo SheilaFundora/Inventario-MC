@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useForm} from "react-hook-form";
-import {add_product} from "@/constants/apiRoutes";
+import {product} from "@/constants/apiRoutes";
 import {fetchData} from "@/helper/fetch";
 import Swal from "sweetalert2";
 
-const AddProduct = ({openDialog, handleOpenDialog, handleRefreshProducts, loading, setLoading}) => {
+const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts, loading, setLoading}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -14,7 +14,7 @@ const AddProduct = ({openDialog, handleOpenDialog, handleRefreshProducts, loadin
         console.log('esta es la data: ', data)
 
         try {
-            const resp = await fetchData(add_product, data, "POST");
+            const resp = await fetchData(product, data, "POST");
 
             console.log(resp)
 
@@ -27,9 +27,8 @@ const AddProduct = ({openDialog, handleOpenDialog, handleRefreshProducts, loadin
             console.log(error)
         }
 
-        handleOpenDialog(!openDialog);
+        handleOpenAddProduct(!openAddProduct);
         handleRefreshProducts();
-
         setLoading(!loading);
 
     }
@@ -37,27 +36,29 @@ const AddProduct = ({openDialog, handleOpenDialog, handleRefreshProducts, loadin
         return (
             <div>
                 <Dialog
-                    open={openDialog}
-                    onClose={handleOpenDialog}
+                    open={openAddProduct}
+                    onClose={handleOpenAddProduct}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
                     <form onSubmit={handleSubmit(handleSubmitProduct)}>
-                        <DialogContent className='text-center'>
-                            <h4 className='mt-4'>Formulario para agregar Productos</h4>
+                        <DialogContent>
+                            <h4 className='mt-4 text-center'>Formulario para agregar Productos</h4>
 
-                            <div className={'d-flex align-items-center justify-content-between'}>
-
+                            <div >
                                 <TextField
                                     label="Nombre"
                                     type='text'
-                                    sx={{m: 2, width: '200px'}}
+                                    sx={{m: 2, width: '500px'}}
                                     {...register("nombre", {
                                         required: 'Campo requerido'
                                     })}
                                     error={errors.nombre}
                                     helperText={errors.nombre && errors.nombre.message}
                                 />
+                            </div>
+
+                            <div className={'d-flex align-items-center justify-content-between'}>
                                 <TextField
                                     label="Precio"
                                     type='text'
@@ -75,7 +76,7 @@ const AddProduct = ({openDialog, handleOpenDialog, handleRefreshProducts, loadin
                                 <TextField
                                     label="Cantidad"
                                     type='text'
-                                    sx={{m: 2, width: '400px'}}
+                                    sx={{m: 2, width: '200px'}}
                                     {...register('cantidad', {
                                         required: 'Campo requerido',
                                         pattern: {
@@ -94,10 +95,10 @@ const AddProduct = ({openDialog, handleOpenDialog, handleRefreshProducts, loadin
 
 
                             <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
-                                <Button autoFocus onClick={handleOpenDialog} variant="contained" color='error'>
+                                <Button autoFocus onClick={handleOpenAddProduct} variant="contained" color='error'>
                                     Cancelar
-                                </Button> <br/>
-                                <Button variant="contained" type="submit" className={'ps-3'}>
+                                </Button>
+                                <Button variant="contained" type="submit" className={'ms-4'}>
                                     Aceptar
                                 </Button>
                             </DialogActions>
