@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Client } from 'pg';
 import { productos } from './cafeteria/cafeteria.module';
+import { ConfigModule } from './config/config.module';
 
 
 
@@ -19,7 +20,8 @@ import { productos } from './cafeteria/cafeteria.module';
       retryDelay:3000,
       retryAttempts:10,
     }),
-    productos
+    productos,
+    ConfigModule
     
       
       
