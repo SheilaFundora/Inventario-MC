@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, HttpStatus,HttpException } from '@nestjs/common';
 import { productoService } from '../services/productos.service';
 import { CreateProductoDto } from '../dto/create-p.dto';
 
@@ -23,9 +23,15 @@ export class productoController {
     }
 
     @Post()
-    create(@Body() body:CreateProductoDto){
-        return this.productoService.create(body);
-    }
+    async create(@Body() CreateProductoDto:CreateProductoDto){
+        try {
+            return await this.productoService.create(CreateProductoDto);
+          } catch (error) {
+            throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+          }
+        }
+
+    
 
     @Put(':id')
     update(@Param('id') id:number, @Body() body:any)
