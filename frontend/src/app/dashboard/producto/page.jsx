@@ -49,13 +49,14 @@ export default function BasicCard() {
                                loading={loading}
             />
 
-            <AddProduct openAddProduct={openAddProduct}
-                        handleOpenAddProduct={handleOpenAddProduct}
-                        handleRefreshProducts={handleRefreshProducts}
-                        setLoading={setLoading}
-                        loading={loading}
-            />
-
+            { openAddProduct &&
+                <AddProduct openAddProduct={openAddProduct}
+                            handleOpenAddProduct={handleOpenAddProduct}
+                            handleRefreshProducts={handleRefreshProducts}
+                            setLoading={setLoading}
+                            loading={loading}
+                />
+            }
         </div>
     );
 }

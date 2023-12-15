@@ -1,55 +1,31 @@
-import React, {useState} from 'react';
-import {
-    Alert,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    Snackbar,
-    TextField
-} from "@mui/material";
-import Button from "@mui/material/Button";
-import {useForm} from "react-hook-form";
-import {product} from "@/constants/apiRoutes";
-import {fetchData} from "@/helper/fetch";
-import Swal from "sweetalert2";
+import React, {useEffect, useState} from 'react';
+import {Dialog, DialogActions, DialogContent, Snackbar, TextField} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
-import MuiAlert from '@mui/material/Alert';
+import Button from "@mui/material/Button";
+import {useForm} from "react-hook-form";
+import {fetchData} from "@/helper/fetch";
+import {product} from "@/constants/apiRoutes";
+import Swal from "sweetalert2";
 
-
-const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts, loading, setLoading}) => {
+const EditProduct = ({openEdit, handleOpenEdit, handleRefreshProducts, loading, setLoading, productToEdit}) => {
     const { register, reset, handleSubmit, formState: { errors } } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
-    const [open, setOpen] = React.useState(false);
 
-    const handleClick = () => {
-        setOpen(true);
-    };
-
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
-
-    const handleSubmitProduct = async (data) => {
-        console.log('esta es la data: ', data)
+    console.log('vfvf', productToEdit);
+    const handleEditProduct = async (data) => {
+        const endpoint = product + '/' + productToEdit.id +'/'
 
         try {
-            const resp = await fetchData(product, data, "POST");
+            const resp = await fetchData(endpoint, data, "PUT");
 
-            console.log(resp)
-
-            if (resp.status === 201) {
-                handleClick()
+            if (resp.status === 200) {
+                handleOpenEdit();
+                handleRefreshProducts();
+                setLoading(!loading);
+                Swal.fire('Exito', "Se ha editado correctamente", 'success');
             } else {
-                setErrorMessage('Error de servidor')
+                Swal.fire('Error', "Error del servidor", 'error');
             }
         } catch (error) {
             console.log(error)
@@ -59,23 +35,18 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
 
     }
 
-    const handleCancel = () => {
-        handleOpenAddProduct(!openAddProduct);
-        handleRefreshProducts();
-        setLoading(!loading);
-    }
-
-        return (
+    return (
+        <div>
             <div>
                 <Dialog
-                    open={openAddProduct}
-                    onClose={handleOpenAddProduct}
+                    open={openEdit}
+                    onClose={handleOpenEdit}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
                     <IconButton
                         aria-label="close"
-                        onClick={handleOpenAddProduct}
+                        onClick={handleOpenEdit}
                         sx={{
                             position: 'absolute',
                             right: 8,
@@ -83,14 +54,14 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                             color: (theme) => theme.palette.grey[500],
                         }}
                     >
-                        <CloseIcon />
+                        <CloseIcon/>
                     </IconButton>
 
-                    <form onSubmit={handleSubmit(handleSubmitProduct)}>
+                    <form onSubmit={handleSubmit(handleEditProduct)}>
                         <DialogContent>
-                            <h4 className='mt-4 text-center'>Formulario para agregar Productos</h4>
+                            <h4 className='mt-4 text-center'>Formulario para editar Productos</h4>
 
-                            <div >
+                            <div>
                                 <TextField
                                     label="Nombre"
                                     type='text'
@@ -100,6 +71,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     })}
                                     error={errors.nombre}
                                     helperText={errors.nombre && errors.nombre.message}
+                                    defaultValue= {productToEdit.nombre}
                                 />
                             </div>
 
@@ -116,6 +88,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                         },
                                     })}
                                     error={errors.precio}
+                                    defaultValue= {productToEdit.precio}
                                     helperText={errors.precio && errors.precio.message}
                                 />
                                 <TextField
@@ -131,6 +104,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     })}
                                     error={errors.cantidad}
                                     helperText={errors.cantidad && errors.cantidad.message}
+                                    defaultValue= {productToEdit.cantidad}
                                 />
 
                             </div>
@@ -140,30 +114,19 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
 
 
                             <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
-                                <Button autoFocus onClick={handleCancel} variant="contained" color='error'>
+                                <Button autoFocus onClick={handleOpenEdit} variant="contained" color='error'>
                                     Cancelar
                                 </Button>
                                 <Button variant="contained" type="submit" className={'ms-4'}>
-                                    Agregar
+                                    Aceptar
                                 </Button>
                             </DialogActions>
                         </DialogContent>
                     </form>
                 </Dialog>
-
-
-                <Snackbar open={open}
-                          autoHideDuration={6000}
-                          onClose={handleClose}
-                          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                          style={{ margin: 'auto' }}
-                >
-                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                        El producto se ha agregado correctamente!!
-                    </Alert>
-                </Snackbar>
             </div>
+        </div>
     );
 };
 
-export default AddProduct;
+export default EditProduct;

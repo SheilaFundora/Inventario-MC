@@ -13,17 +13,21 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import {product} from "@/constants/apiRoutes";
 import axios from "axios";
 import Swal from "sweetalert2";
+import EditProduct from "@/app/dashboard/producto/EditProduct";
 
 
 const DataTableProducts = ({products, setLoading, loading, handleRefreshProducts}) => {
     const [globalFilter, setGlobalFilter] = useState('');
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [id, setId] = React.useState('');
+    const [productToEdit, setProductToEdit] = React.useState([]);
+
 
     const actionBodyTemplate = (rowData) => {
         return (
             <>
-                <IconButton size="large" className="text-warning" >
+                <IconButton size="large" className="text-warning" onClick={() => confirmEditProduct(rowData.id)}>
                     <EditIcon fontSize="inherit" />
                 </IconButton>
                 <IconButton size="large" color="error" onClick={() => confirmDeleteProduct(rowData.id)}>
@@ -35,9 +39,21 @@ const DataTableProducts = ({products, setLoading, loading, handleRefreshProducts
     const handleOpenDelete = () => {
         setOpenDelete(!openDelete);
     }
+
     const confirmDeleteProduct = (idProduct) =>{
         setId(idProduct)
         handleOpenDelete()
+    }
+
+    const handleOpenEdit = () => {
+        setOpenEdit(!openEdit);
+    }
+
+    const confirmEditProduct = (idProduct) =>{
+        const _products = products.filter((val) => val.id === idProduct)
+
+        setProductToEdit(_products[0]);
+        handleOpenEdit();
     }
 
     const handleDeleteProduct = async () => {
@@ -81,8 +97,8 @@ const DataTableProducts = ({products, setLoading, loading, handleRefreshProducts
                            className="p-datatable-hgridlines"
                 >
                     <Column field="nombre" header="Nombre" style={{width: '25%'}}></Column>
-                    <Column field="precio" header="Precio" sortable style={{width: '25%'}}></Column>
                     <Column field="cantidad" header="Cantidad" sortable style={{width: '25%'}}></Column>
+                    <Column field="precio" header="Precio" sortable style={{width: '25%'}}></Column>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
                 </DataTable>
             </div>
@@ -125,6 +141,17 @@ const DataTableProducts = ({products, setLoading, loading, handleRefreshProducts
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            { openEdit &&
+                <EditProduct openEdit={openEdit}
+                             handleOpenEdit={handleOpenEdit}
+                             handleRefreshProducts={handleRefreshProducts}
+                             setLoading={setLoading}
+                             loading={loading}
+                             productToEdit={productToEdit}
+                />
+            }
+
 
         </div>
 
