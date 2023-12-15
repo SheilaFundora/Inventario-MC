@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, HttpStatus,HttpException } from '@nestjs/common';
 import { productoService } from '../services/productos.service';
 import { CreateProductoDto } from '../dto/create-p.dto';
 
@@ -23,9 +23,20 @@ export class productoController {
     }
 
     @Post()
-    create(@Body() body:CreateProductoDto){
-        return this.productoService.create(body);
+    create(@Body() CreateProductoDto:CreateProductoDto){
+        try{
+            return this.productoService.create(CreateProductoDto);
+        }
+        catch (error){
+            if (error.code ==='400'){
+                throw new HttpException('Datos duplicados', HttpStatus.BAD_REQUEST);
+            }
+            throw new HttpException('Error interno del servidor', HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
     }
+
+    
 
     @Put(':id')
     update(@Param('id') id:number, @Body() body:any)
