@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { productoService } from '../services/productos.service';
+import { CreateProductoDto } from '../dto/create-p.dto';
 
 
 @Controller('api/cafeteria/producto')
@@ -22,7 +23,7 @@ export class productoController {
     }
 
     @Post()
-    create(@Body() body:any){
+    create(@Body() body:CreateProductoDto){
         return this.productoService.create(body);
     }
 

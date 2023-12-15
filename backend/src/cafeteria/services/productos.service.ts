@@ -25,6 +25,7 @@ export class productoService {
 
     create(body:any){
         const newproducto = this.productoRep.create(body);
+        
         return this.productoRep.save(newproducto);
     }
 
