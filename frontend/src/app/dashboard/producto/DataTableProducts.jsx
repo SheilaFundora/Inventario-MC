@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import IconButton from "@mui/material/IconButton";
@@ -17,12 +17,16 @@ import EditProduct from "@/app/dashboard/producto/EditProduct";
 
 
 const DataTableProducts = ({products, setLoading, loading, handleRefreshProducts}) => {
+    const [produtsData, setProductsData] =  React.useState(products);
     const [globalFilter, setGlobalFilter] = useState('');
     const [openDelete, setOpenDelete] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
     const [id, setId] = React.useState('');
     const [productToEdit, setProductToEdit] = React.useState([]);
 
+    useEffect(() => {
+        setProductsData(products);
+    }, [products]);
 
     const actionBodyTemplate = (rowData) => {
         return (
@@ -77,18 +81,23 @@ const DataTableProducts = ({products, setLoading, loading, handleRefreshProducts
         }
     }
 
+    const handleInputChange = (e) => {
+        console.log(e.target.value);
+        setGlobalFilter(e.target.value);
+    };
+
     return (
         <div>
             <div className={'d-flex align-items-end justify-content-between mt-4'}>
                 <InputText
                     value={globalFilter}
-                    onChange={(e) => setGlobalFilter(e.target.value)}
+                    onChange={handleInputChange}
                     placeholder="Filtrar..."
                     sx={{mb: 3}}
                 />
             </div>
             <div className="datatable mt-4">
-                <DataTable value={products}
+                <DataTable value={produtsData}
                            paginator rows={5}
                            rowsPerPageOptions={[5, 10, 25, 50]}
                            tableStyle={{minWidth: '50rem'}}

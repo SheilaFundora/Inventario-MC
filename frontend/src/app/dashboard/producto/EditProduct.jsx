@@ -12,7 +12,6 @@ const EditProduct = ({openEdit, handleOpenEdit, handleRefreshProducts, loading, 
     const { register, reset, handleSubmit, formState: { errors } } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
 
-    console.log('vfvf', productToEdit);
     const handleEditProduct = async (data) => {
         const endpoint = product + '/' + productToEdit.id +'/'
 
