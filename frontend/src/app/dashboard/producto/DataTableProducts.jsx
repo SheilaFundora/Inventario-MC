@@ -103,9 +103,10 @@ const DataTableProducts = ({products, setLoading, loading, handleRefreshProducts
                            tableStyle={{minWidth: '50rem'}}
                            globalFilter={globalFilter}
                            loading={loading}
+                           stripedRows
                            className="p-datatable-hgridlines"
                 >
-                    <Column field="nombre" header="Nombre" style={{width: '25%'}}></Column>
+                    <Column field="nombre" header="Nombre" sortable style={{width: '25%'}}></Column>
                     <Column field="cantidad" header="Cantidad" sortable style={{width: '25%'}}></Column>
                     <Column field="precio" header="Precio" sortable style={{width: '25%'}}></Column>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
