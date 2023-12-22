@@ -44,12 +44,15 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
         try {
             const resp = await fetchData(product, data, "POST");
 
-            console.log(resp)
+            if (resp.status === 400) {
+                setErrorMessage('El producto ya existe')
 
-            if (resp.status === 201) {
-                handleClick()
-            } else {
-                setErrorMessage('Error de servidor')
+            }else{
+                if (resp.status === 201) {
+                    handleClick()
+                } else {
+                    setErrorMessage('Error de servidor')
+                }
             }
         } catch (error) {
             console.log(error)
