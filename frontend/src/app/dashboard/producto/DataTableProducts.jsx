@@ -18,9 +18,6 @@ import EditProduct from "@/app/dashboard/producto/EditProduct";
 
 const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts}) => {
     const [produtsData, setProductsData] =  React.useState(products);
-/*
-    const [globalFilter, setGlobalFilter] = useState('');
-*/
     const [openDelete, setOpenDelete] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
     const [id, setId] = React.useState('');
@@ -36,7 +33,9 @@ const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts
 
     }, [products])
 
-
+    const getColumnStyle = (precio) => {
+        return precio < 10 ? { color: 'red' } : {};
+    };
 
     const actionBodyTemplate = (rowData) => {
         return (
@@ -93,27 +92,18 @@ const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts
 
     return (
         <div>
-           {/* <div className={'d-flex align-items-end justify-content-between mt-4'}>
-                <InputText
-                    value={globalFilter}
-                    onChange={(e) => setGlobalFilter(e.target.value)}
-                    placeholder="Filtrar..."
-                    sx={{mb: 3}}
-                />
-            </div>*/}
             <div className="datatable mt-4">
                 <DataTable value={produtsData || []}
                            paginator rows={5}
                            rowsPerPageOptions={[5, 10, 25, 50]}
                            tableStyle={{minWidth: '50rem'}}
-/*
-                           globalFilter={globalFilter ?? produtsData}
-*/
                            className="p-datatable-hgridlines"
                 >
                     <Column field="nombre" header="Nombre" sortable filter style={{width: '25%'}}></Column>
-                    <Column field="cantidad" header="Cantidad" sortable style={{width: '25%'}}></Column>
-                    <Column field="precio" header="Precio" sortable style={{width: '25%'}}></Column>
+                    <Column field="cantidad" header="Cantidad" sortable style={{ width: '20%' }} body={(products) => (
+                        <div className={products.cantidad < 100 ? 'text-danger font-weight-bold' : ''}>{products.cantidad}</div>
+                    )}></Column>
+                    <Column field="precio" header="Precio" sortable/>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
                 </DataTable>
             </div>

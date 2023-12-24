@@ -92,16 +92,30 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                         <DialogContent>
                             <h4 className='mt-4 text-center'>Formulario para agregar Productos</h4>
 
-                            <div >
+                            <div className={'d-flex align-items-center justify-content-between'}>
                                 <TextField
                                     label="Nombre"
                                     type='text'
-                                    sx={{m: 2, width: '500px'}}
+                                    sx={{m: 2, width: '300px'}}
                                     {...register("nombre", {
                                         required: 'Campo requerido'
                                     })}
                                     error={errors.nombre}
                                     helperText={errors.nombre && errors.nombre.message}
+                                />
+                                <TextField
+                                    label="Límite"
+                                    type='text'
+                                    sx={{m: 2, width: '300px'}}
+                                    {...register('limite', {
+                                        required: 'Campo requerido',
+                                        pattern: {
+                                            value: '/^\d+(\.\d+)?$/',
+                                            message: 'Ingrese solo números',
+                                        },
+                                    })}
+                                    error={errors.limite}
+                                    helperText={errors.limite && errors.limite.message}
                                 />
                             </div>
 
@@ -109,7 +123,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                 <TextField
                                     label="Precio"
                                     type='text'
-                                    sx={{m: 2, width: '200px'}}
+                                    sx={{m: 2, width: '300px'}}
                                     {...register('precio', {
                                         required: 'Campo requerido',
                                         pattern: {
@@ -123,7 +137,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                 <TextField
                                     label="Cantidad"
                                     type='text'
-                                    sx={{m: 2, width: '200px'}}
+                                    sx={{m: 2, width: '300px'}}
                                     {...register('cantidad', {
                                         required: 'Campo requerido',
                                         pattern: {
