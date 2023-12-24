@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 import EditProduct from "@/app/dashboard/producto/EditProduct";
 
 
-const DataTableProducts = ({products, setLoading, handleRefreshProducts}) => {
+const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts}) => {
     const [produtsData, setProductsData] =  React.useState(products);
 /*
     const [globalFilter, setGlobalFilter] = useState('');
