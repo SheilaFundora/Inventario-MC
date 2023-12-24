@@ -77,6 +77,7 @@ const Page = () => {
         console.log('name dep', nameDep)
         console.log('productos', products)
     }
+    console.log('productos', products)
 
     return (
         <div className={'mt-4'}>
@@ -102,12 +103,14 @@ const Page = () => {
                             <TableCell style={{ fontWeight: 'bold', fontSize: '1rem'  ,backgroundColor: '#f9fafb'}}>Entrada</TableCell>
                             <TableCell style={{ fontWeight: 'bold', fontSize: '1rem' ,backgroundColor: '#f9fafb'}}>Traslado</TableCell>
                             <TableCell style={{ fontWeight: 'bold', fontSize: '1rem' ,backgroundColor: '#f9fafb'}}>Venta</TableCell>
+                            <TableCell style={{ fontWeight: 'bold', fontSize: '1rem' ,backgroundColor: '#f9fafb'}}>Merma</TableCell>
                             <TableCell style={{ fontWeight: 'bold', fontSize: '1rem' ,backgroundColor: '#f9fafb'}}>SubTotal efectivo</TableCell>
                             <TableCell style={{ fontWeight: 'bold', fontSize: '1rem' ,backgroundColor: '#f9fafb'}}>Existencia final</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredProducts.map((row, rowIndex) => (
+                        {filteredProducts.map((row, rowIndex) =>  (
+
                             <TableRow key={row.id}>
                                 <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>{row.nombre}</TableCell>
                                 <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>{row.cantidad}</TableCell>
@@ -132,15 +135,27 @@ const Page = () => {
                                 </TableCell>
                                 <TableCell>
                                     <TextField
-                                        value={row.subTotal || ''}
-                                        onChange={(e) => handleEdit(row.id, 'subTotal', e.target.value)}
+                                        value={row.merma || ''}
+                                        onChange={(e) => handleEdit(row.id, 'merma', e.target.value)}
                                     />
                                 </TableCell>
-                                <TableCell>
-                                    <TextField
-                                        value={row.existencia || ''}
-                                        onChange={(e) => handleEdit(row.id, 'existencia', e.target.value)}
-                                    />
+                                <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>
+                                    {Number(row.entrada !== undefined && row.entrada !== '' &&
+                                        row.traslado !== undefined && row.traslado !== '' &&
+                                        row.venta !== undefined && row.venta !== '' &&
+                                        row.merma !== undefined && row.merma !== ''
+                                        ?
+                                        ( (parseFloat(row.cantidad) + parseFloat(row.entrada))
+                                            - parseFloat(row.traslado) - parseFloat(row.venta) - parseFloat(row.merma))
+                                        : 0
+                                    )}
+                                </TableCell>
+                                <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>
+                                    {Number(row.venta !== undefined && row.venta !== ''
+                                            ?
+                                            ( parseFloat(row.venta) * parseFloat(row.precio))
+                                            : 0
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}
