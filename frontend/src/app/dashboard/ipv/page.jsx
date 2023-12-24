@@ -61,7 +61,16 @@ const Page = () => {
             process.env.NEXT_PUBLIC_API_HOST + product
         )
             .then(response => {
-                setProducts(response.data);
+                const newData = response.data.map((objeto) => ({
+                    ...objeto,
+                    entrada: 0,
+                    traslado: 0,
+                    venta: 0,
+                    merma: 0,
+                    subTotalEfectivo: 0,
+                    existencia: 0
+                }));
+                setProducts(newData);
             })
 
     }
@@ -117,43 +126,43 @@ const Page = () => {
                                 <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>{row.precio}</TableCell>
                                 <TableCell>
                                     <TextField
-                                        value={row.entrada || ''}
+                                        value={row.entrada === undefined ? 0 : row.entrada}
                                         onChange={(e) => handleEdit(row.id, 'entrada', e.target.value)}
                                     />
                                 </TableCell>
                                 <TableCell>
                                     <TextField
-                                        value={row.traslado || ''}
+                                        value={row.traslado === undefined ? 0 : row.traslado}
                                         onChange={(e) => handleEdit(row.id, 'traslado', e.target.value)}
                                     />
                                 </TableCell>
                                 <TableCell>
                                     <TextField
-                                        value={row.venta || ''}
+                                        value={row.venta === undefined ? 0 : row.venta}
                                         onChange={(e) => handleEdit(row.id, 'venta', e.target.value)}
                                     />
                                 </TableCell>
                                 <TableCell>
                                     <TextField
-                                        value={row.merma || ''}
+                                        value={row.merma === undefined ? 0 : row.merma}
                                         onChange={(e) => handleEdit(row.id, 'merma', e.target.value)}
                                     />
+                                </TableCell>
+                                <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>
+                                    {Number(row.venta !== undefined && row.venta !== ''
+                                        ?
+                                        ( parseFloat(row.venta) * parseFloat(row.precio))
+                                        : 0
+                                    )}
                                 </TableCell>
                                 <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>
                                     {Number(row.entrada !== undefined && row.entrada !== '' &&
                                         row.traslado !== undefined && row.traslado !== '' &&
                                         row.venta !== undefined && row.venta !== '' &&
                                         row.merma !== undefined && row.merma !== ''
-                                        ?
-                                        ( (parseFloat(row.cantidad) + parseFloat(row.entrada))
-                                            - parseFloat(row.traslado) - parseFloat(row.venta) - parseFloat(row.merma))
-                                        : 0
-                                    )}
-                                </TableCell>
-                                <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>
-                                    {Number(row.venta !== undefined && row.venta !== ''
                                             ?
-                                            ( parseFloat(row.venta) * parseFloat(row.precio))
+                                            ( (parseFloat(row.cantidad) + parseFloat(row.entrada))
+                                                - parseFloat(row.traslado) - parseFloat(row.venta) - parseFloat(row.merma))
                                             : 0
                                     )}
                                 </TableCell>
