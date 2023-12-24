@@ -1,4 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, Unique, OneToMany} from 'typeorm';
+import { ipv } from './ipv.entity';
 
 @Entity()
 export class producto{
@@ -10,4 +11,6 @@ export class producto{
     cantidad:number;
     @Column({nullable:false, type:'float'})
     precio:string;
+    @OneToMany(() => ipv, (inventario) => inventario.producto_id)
+    ipvs: ipv[]
 }

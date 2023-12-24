@@ -2,7 +2,7 @@ import { Injectable, Body, Delete, BadRequestException, NotFoundException } from
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository} from 'typeorm'
 import { producto } from '../entities/producto.entity';
-import { productos } from '../cafeteria.module';
+
 
 @Injectable()
 export class productoService {
