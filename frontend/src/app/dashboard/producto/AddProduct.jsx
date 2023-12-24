@@ -39,7 +39,6 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
     };
 
     const handleSubmitProduct = async (data) => {
-        console.log('esta es la data: ', data)
 
         try {
             const resp = await fetchData(product, data, "POST");
@@ -59,13 +58,13 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
         }
 
         reset();
+        handleRefreshProducts();
+        setLoading(!loading);
 
     }
 
     const handleCancel = () => {
         handleOpenAddProduct(!openAddProduct);
-        handleRefreshProducts();
-        setLoading(!loading);
     }
 
         return (
