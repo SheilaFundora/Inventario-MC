@@ -11,6 +11,8 @@ export class producto{
     cantidad:number;
     @Column({nullable:false, type:'float'})
     precio:string;
+    @Column({nullable:true})
+    limite:number;
     @OneToMany(() => ipv, (inventario) => inventario.producto_id)
     ipvs: ipv[]
 }

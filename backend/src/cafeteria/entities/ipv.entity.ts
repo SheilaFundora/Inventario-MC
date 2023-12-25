@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, JoinColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, JoinColumn, CreateDateColumn} from 'typeorm';
 import { producto } from './producto.entity';
 
 @Entity()
@@ -17,6 +17,21 @@ export class ipv{
     subtotalEfectivo:string;
     @Column({nullable:false})
     existenciaFinal:number;
+    @Column({nullable:false, type:'float'})
+    total:string;
+    @Column({nullable:false, type:'float'})
+    transferencia:string;
+    @Column({nullable:false, type:'float'})
+    salario:string;
+    @Column({nullable:false, type:'float'})
+    totalEfectivo:string;
+    @Column({nullable:false, type:'float'})
+    otrosGastos:string;
+    @Column({nullable:true})
+    nombreDependienta:string;
+    @CreateDateColumn({ type: "timestamp without time zone", default: () => "CURRENT_TIMESTAMP" , nullable: true})
+    fechaIPV: string;
+    
 
     @ManyToOne(() => producto, (producto_id) => producto_id.ipvs, {eager: true,})
     @JoinColumn({name: 'producto_id'})
