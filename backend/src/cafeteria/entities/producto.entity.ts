@@ -10,7 +10,7 @@ export class producto{
     @Column({nullable:false})
     cantidad:number;
     @Column({nullable:true, type:'float'})
-    precioC:number;
+    precioC:string;
     @Column({nullable:false, type:'float'})
     precio:string;
     @Column({nullable:true})
