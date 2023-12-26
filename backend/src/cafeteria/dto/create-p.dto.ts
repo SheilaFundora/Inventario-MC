@@ -10,6 +10,7 @@ export class CreateProductoDto{
     precio:string;
     ipvs:Array<ipv>;
     limite:number;
+    precioC:string;
 
 
 
