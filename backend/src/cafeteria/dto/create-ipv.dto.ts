@@ -11,11 +11,11 @@ export class CreateIPVDto{
     venta: number;
     subtotalEfectivo:string;
     existenciaFinal:number;
-    total:number;
-    transferencia:number;
-    salario:number;
-    totalEfectivo:number;
-    otrosGastos:number;
+    total:string;
+    transferencia:string;
+    salario:string;
+    totalEfectivo:string;
+    otrosGastos:string;
     nombreDependienta:string;
     fechaIPV:string;
 }
