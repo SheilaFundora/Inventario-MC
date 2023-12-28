@@ -19,6 +19,10 @@ export class ipvGlobal{
     nombreDependienta:string;
     @CreateDateColumn({ type: "timestamp without time zone", default: () => "CURRENT_TIMESTAMP" , nullable: true})
     fechaIPV: string;
+    @Column({nullable:true})
+    nombreCafeteria:string;
+    @Column({nullable:true,type:'float'})
+    porcientoSalario:string;
     
 
     @ManyToOne(() => ipv, (ipv_id) => ipv_id.ipvsG, {eager: true,})
