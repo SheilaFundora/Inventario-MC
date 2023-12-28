@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {product} from "@/constants/apiRoutes";
+import {ipv, product} from "@/constants/apiRoutes";
 import {
     Dialog,
     DialogActions,
@@ -10,15 +10,13 @@ import {
     Paper,
     Table,
     TableBody,
-    TableCell, tableCellClasses,
+    TableCell,
     TableContainer,
     TableHead,
-    TablePagination,
     TableRow,
     TextField
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import {styled} from "@mui/material/styles";
 import {InputText} from "primereact/inputtext";
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
@@ -26,6 +24,7 @@ import IconButton from "@mui/material/IconButton";
 import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
 import {useForm} from "react-hook-form";
 import Typography from "@mui/material/Typography";
+import {fetchData} from "@/helper/fetch";
 
 
 const Page = () => {
@@ -90,13 +89,27 @@ const Page = () => {
         setProducts(updatedData);
     };
 
-    const handleSubmitIPV =  (data) => {
+    const handleSubmitIPV =  async (data) => {
         const total = products.reduce((total, products) => total + products.subtotalEfectivo, 0);
         data.ipv = products;
         data.total = total;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
-        console.log('data', data)
+        try {
+            const resp = await fetchData(ipv, data, "POST");
+
+            console.log(resp)
+
+            /*
+            if (resp.status === 201) {
+                handleClick()
+            } else {
+                setErrorMessage('Error de servidor')
+            }*/
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
