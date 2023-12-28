@@ -25,7 +25,7 @@ export class ipvGlobal{
     porcientoSalario:string;
     
 
-    @ManyToOne(() => ipv, (ipv_id) => ipv_id.ipvsG, {eager: true,})
+    @ManyToOne(() => ipv, (ipv_id) => ipv_id.ipvsG, {eager: true,onDelete:'CASCADE'})
     @JoinColumn({name: 'ipv_id'})
     ipv_id:ipv;
 }

@@ -34,7 +34,7 @@ export class ipv{
     fechaIPV: string;
     
 
-    @ManyToOne(() => producto, (producto_id) => producto_id.ipvs, {eager: true,})
+    @ManyToOne(() => producto, (producto_id) => producto_id.ipvs, {eager: true,onDelete:'CASCADE'})
     @JoinColumn({name: 'producto_id'})
     producto_id:producto;
     
