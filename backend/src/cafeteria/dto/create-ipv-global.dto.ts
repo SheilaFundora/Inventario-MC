@@ -11,5 +11,7 @@ export class CreateIPVGDto{
     totalEfectivo:string;
     otrosGastos:string;
     nombreDependienta:string;
+    nombreCafeteria:string
+    porcientoSalario:string;
     fechaIPV:string;
 }
