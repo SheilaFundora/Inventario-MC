@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {product} from "@/constants/apiRoutes";
+import {ipv, product} from "@/constants/apiRoutes";
 import {
     Dialog,
     DialogActions,
@@ -10,32 +10,48 @@ import {
     Paper,
     Table,
     TableBody,
-    TableCell, tableCellClasses,
+    TableCell,
     TableContainer,
     TableHead,
-    TablePagination,
     TableRow,
     TextField
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import {styled} from "@mui/material/styles";
 import {InputText} from "primereact/inputtext";
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
 import IconButton from "@mui/material/IconButton";
 import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import {useForm} from "react-hook-form";
+import Typography from "@mui/material/Typography";
+import {fetchData} from "@/helper/fetch";
+import Swal from "sweetalert2";
 
 
 const Page = () => {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [openSave, setOpenSave] = React.useState(false);
-    const [nameDep, setNameDev] = React.useState('');
-    const [date, setDate] = React.useState('');
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleOpenSave = () => {
         setOpenSave(!openSave)
+    }
+
+    const handleIpv = () => {
+        const updatedData = products.map((row) => {
+            const subtotalEfectivo = parseFloat(row.venta || 0) * parseFloat(row.precio || 0);
+            const existenciaFinal = (parseFloat(row.cantidad) + parseFloat(row.entrada))
+                - parseFloat(row.traslado) - parseFloat(row.venta) - parseFloat(row.merma)
+
+            return {
+                ...row,
+                subtotalEfectivo,
+                existenciaFinal,
+            };
+        });
+        setProducts(updatedData)
+        handleOpenSave();
     }
 
     const filteredProducts = products.filter((row) =>
@@ -44,13 +60,6 @@ const Page = () => {
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
-    };
-
-    const handleDate = (e) => {
-        setDate(e.target.value);
-    };
-    const handleNameDev = (e) => {
-        setNameDev(e.target.value);
     };
 
     useEffect(() => {
@@ -67,8 +76,8 @@ const Page = () => {
                     traslado: 0,
                     venta: 0,
                     merma: 0,
-                    subTotalEfectivo: 0,
-                    existencia: 0
+                    subtotalEfectivo: 0,
+                    existenciaFinal: 0
                 }));
                 setProducts(newData);
             })
@@ -81,12 +90,30 @@ const Page = () => {
         setProducts(updatedData);
     };
 
-    const handleSubmit = () => {
-        console.log('date ', date)
-        console.log('name dep', nameDep)
-        console.log('productos', products)
+    const handleSubmitIPV =  async (data) => {
+        const total = products.reduce((total, products) => total + products.subtotalEfectivo, 0);
+        data.ipv = products;
+        data.total = total;
+        data.salario = 0;
+        data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
+
+        try {
+            const resp = await fetchData(ipv, data, "POST");
+            handleOpenSave();
+
+            if (resp.status === 201) {
+                await Swal.fire('Exito', "Se ha creado correctamente el ipv", 'success');
+            }else{
+                await Swal.fire('Error', "Error del servidor", 'error');
+
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
     }
-    console.log('productos', products)
+
+
 
     return (
         <div className={'mt-4'}>
@@ -98,7 +125,7 @@ const Page = () => {
                     onChange={handleSearch}
                 />
 
-                <Button variant="contained" className={'float-end'} onClick={handleOpenSave} >+ Guardar Inventario</Button>
+                <Button variant="contained" className={'float-end'} onClick={handleIpv} >+ Guardar Inventario</Button>
 
             </div>
 
@@ -155,17 +182,31 @@ const Page = () => {
                                         : 0
                                     )}
                                 </TableCell>
-                                <TableCell style={{ fontFamily: '"Inter var", sans-serif', fontSize: '1rem' }}>
-                                    {Number(row.entrada !== undefined && row.entrada !== '' &&
+                                <TableCell
+                                    style={{
+                                        fontFamily: '"Inter var", sans-serif',
+                                        fontSize: '1rem',
+                                        color: (row.entrada !== undefined && row.entrada !== '' &&
+                                            row.traslado !== undefined && row.traslado !== '' &&
+                                            row.venta !== undefined && row.venta !== '' &&
+                                            row.merma !== undefined && row.merma !== '' &&
+                                            ((parseFloat(row.cantidad) + parseFloat(row.entrada))
+                                                - parseFloat(row.traslado) - parseFloat(row.venta) - parseFloat(row.merma)) < 0)
+                                            ? 'red'
+                                            : 'inherit' // Color predeterminado si no es negativo
+                                    }}
+                                >
+                                    {Number(
+                                        row.entrada !== undefined && row.entrada !== '' &&
                                         row.traslado !== undefined && row.traslado !== '' &&
                                         row.venta !== undefined && row.venta !== '' &&
                                         row.merma !== undefined && row.merma !== ''
-                                            ?
-                                            ( (parseFloat(row.cantidad) + parseFloat(row.entrada))
+                                            ? ((parseFloat(row.cantidad) + parseFloat(row.entrada))
                                                 - parseFloat(row.traslado) - parseFloat(row.venta) - parseFloat(row.merma))
                                             : 0
                                     )}
                                 </TableCell>
+
                             </TableRow>
                         ))}
                     </TableBody>
@@ -179,7 +220,7 @@ const Page = () => {
                 className={'p-5'}
             >
 
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                <DialogTitle sx={{m: 0, p: 2}} id="customized-dialog-title">
                 </DialogTitle>
 
                 <IconButton
@@ -192,37 +233,86 @@ const Page = () => {
                         color: (theme) => theme.palette.grey[500],
                     }}
                 >
-                    <CloseIcon />
+                    <CloseIcon/>
                 </IconButton>
 
-                <DialogContent className='text-center'>
-                    <h4 className='mt-4'>Estás seguro de guardar este inventario</h4>
+                <form onSubmit={handleSubmit(handleSubmitIPV)}>
+                    <DialogContent>
+                        <h4 className='mt-4'>Estás seguro de guardar este inventario</h4>
+                        <div className={'d-flex align-items-center justify-content-between'}>
+                            <TextField
+                                label="Dependiente"
+                                type='text'
+                                sx={{m: 2, width: '450px'}}
+                                {...register('nombreDependienta', {
+                                    required: 'Campo requerido',
+                                })}
+                                error={errors.nombreDependienta}
+                                helperText={errors.nombreDependienta && errors.nombreDependienta.message}
+                            />
+                            <TextField
+                                type='date'
+                                sx={{m: 2, width: '450px'}}
+                                {...register('fechaIPV', {
+                                    required: 'Campo requerido',
+                                })}
+                                error={errors.fechaIPV}
+                                helperText={errors.fechaIPV && errors.fechaIPV.message}
+                            />
+                        </div>
+                        <div className={'d-flex align-items-center justify-content-between'}>
+                            <TextField
+                                label="Transferencia"
+                                type='text'
+                                sx={{m: 2, width: '450px'}}
+                                {...register('transferencia', {
+                                    required: 'Campo requerido',
+                                    pattern: {
+                                        value: /^\d+$/,
+                                        message: 'Ingrese solo números',
+                                    },
+                                })}
+                                error={errors.transferencia}
+                                helperText={errors.transferencia && errors.transferencia.message}
+                            />
 
-                    <TextField
-                        label="Nombre del Dependiente"
-                        type='text'
-                        sx={{m: 2, width: '400px'}}
-                        value={nameDep}
-                        onChange={handleNameDev}
-                    />
-                    <TextField
-                        type='date'
-                        sx={{m: 2, width: '400px'}}
-                        value={date}
-                        onChange={handleDate}
-                        helperText={'Fecha'}
+                            <TextField
+                                label="Otros Gastos"
+                                type='text'
+                                sx={{m: 2, width: '450px'}}
+                                {...register('otrosGastos', {
+                                    required: 'Campo requerido',
+                                    pattern: {
+                                        value: /^\d+$/,
+                                        message: 'Ingrese solo números',
+                                    },
+                                })}
+                                error={errors.otrosGastos}
+                                helperText={errors.otrosGastos && errors.otrosGastos.message}
+                            />
+                        </div>
+                        <div className={'text-center ms-3'}>
+                            <Typography variant="subtitle1" style={{ fontSize: '1.1rem' }}>
+                                Importe total de venta: {
+                                products.reduce((total, products) => total + products.subtotalEfectivo, 0)
+                            }
+                            </Typography>
+                        </div>
 
-                    />
-                </DialogContent>
 
-                <DialogActions sx={{ pb: 3, justifyContent: 'center'}} >
-                    <Button autoFocus onClick={handleOpenSave} variant="contained" color='error'>
-                        Cancelar
-                    </Button> <br/>
-                    <Button variant="contained" onClick={handleSubmit}>
-                        Aceptar
-                    </Button>
-                </DialogActions>
+                        <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
+                            <Button autoFocus onClick={handleOpenSave} variant="contained" color='error'>
+                                Cancelar
+                            </Button> <br/>
+                            <Button variant="contained"  type="submit" className={'ms-4'}>
+                                Aceptar
+                            </Button>
+                        </DialogActions>
+                    </DialogContent>
+
+
+                </form>
+
             </Dialog>
         </div>
     );

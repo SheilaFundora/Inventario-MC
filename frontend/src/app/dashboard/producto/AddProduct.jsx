@@ -96,7 +96,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                 <TextField
                                     label="Nombre"
                                     type='text'
-                                    sx={{m: 2, width: '300px'}}
+                                    sx={{m: 2, width: '650px'}}
                                     {...register("nombre", {
                                         required: 'Campo requerido'
                                     })}
@@ -110,7 +110,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     {...register('limite', {
                                         required: 'Campo requerido',
                                         pattern: {
-                                            value: '/^\d+(\.\d+)?$/',
+                                            value: /^\d+$/,
                                             message: 'Ingrese solo números',
                                         },
                                     })}
@@ -121,18 +121,32 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
 
                             <div className={'d-flex align-items-center justify-content-between'}>
                                 <TextField
-                                    label="Precio"
+                                    label="Precio de venta"
                                     type='text'
                                     sx={{m: 2, width: '300px'}}
                                     {...register('precio', {
                                         required: 'Campo requerido',
                                         pattern: {
-                                            value: '/^\d+(\.\d+)?$/',
+                                            value: /^\d+$/,
                                             message: 'Ingrese solo números',
                                         },
                                     })}
                                     error={errors.precio}
                                     helperText={errors.precio && errors.precio.message}
+                                />
+                                <TextField
+                                    label="Precio de compra"
+                                    type='text'
+                                    sx={{m: 2, width: '300px'}}
+                                    {...register('precioC', {
+                                        required: 'Campo requerido',
+                                        pattern: {
+                                            value: /^\d+$/,
+                                            message: 'Ingrese solo números',
+                                        },
+                                    })}
+                                    error={errors.precioC}
+                                    helperText={errors.precioC && errors.precioC.message}
                                 />
                                 <TextField
                                     label="Cantidad"
@@ -151,9 +165,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
 
                             </div>
 
-                            {errorMessage &&
-                                <div className='error-message text-danger text-start ms-4'>{errorMessage}</div>}
-
+                            {errorMessage && <div className='error-message text-danger text-start ms-4'>{errorMessage}</div>}
 
                             <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
                                 <Button autoFocus onClick={handleCancel} variant="contained" color='error'>

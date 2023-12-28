@@ -4,8 +4,6 @@ export const fetchData = ( endpoint, data, method = 'GET' ) => {
 
     const url = `${ baseUrl }${ endpoint }`;
 
-    console.log('url', url)
-
     if ( method === 'GET' ) {
         return fetch( url );
     } else {
