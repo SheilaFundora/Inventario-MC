@@ -1,4 +1,5 @@
 import { ipv } from "../entities/ipv.entity";
+import { ipvGlobal } from "../entities/ipvGlobal.entity";
 
 
 export class CreateIPVDto{
@@ -18,4 +19,5 @@ export class CreateIPVDto{
     otrosGastos:string;
     nombreDependienta:string;
     fechaIPV:string;
+    ipvsG:Array<ipvGlobal>;
 }
