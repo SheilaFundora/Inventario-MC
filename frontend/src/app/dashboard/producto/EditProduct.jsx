@@ -58,42 +58,72 @@ const EditProduct = ({openEdit, handleOpenEdit, handleRefreshProducts, loading, 
 
                     <form onSubmit={handleSubmit(handleEditProduct)}>
                         <DialogContent>
-                            <h4 className='mt-4 text-center'>Formulario para editar Productos</h4>
+                            <h4 className='mt-4 text-center'>Formulario para agregar Productos</h4>
 
-                            <div>
+                            <div className={'d-flex align-items-center justify-content-between'}>
                                 <TextField
                                     label="Nombre"
                                     type='text'
-                                    sx={{m: 2, width: '500px'}}
+                                    sx={{m: 2, width: '650px'}}
                                     {...register("nombre", {
                                         required: 'Campo requerido'
                                     })}
                                     error={errors.nombre}
                                     helperText={errors.nombre && errors.nombre.message}
-                                    defaultValue= {productToEdit.nombre}
+                                    defaultValue={productToEdit.nombre}
+                                />
+                                <TextField
+                                    label="Límite"
+                                    type='text'
+                                    sx={{m: 2, width: '300px'}}
+                                    {...register('limite', {
+                                        required: 'Campo requerido',
+                                        pattern: {
+                                            value: /^\d+$/,
+                                            message: 'Ingrese solo números',
+                                        },
+                                    })}
+                                    error={errors.limite}
+                                    helperText={errors.limite && errors.limite.message}
+                                    defaultValue={productToEdit.limite}
                                 />
                             </div>
 
                             <div className={'d-flex align-items-center justify-content-between'}>
                                 <TextField
-                                    label="Precio"
+                                    label="Precio de venta"
                                     type='text'
-                                    sx={{m: 2, width: '200px'}}
+                                    sx={{m: 2, width: '300px'}}
                                     {...register('precio', {
                                         required: 'Campo requerido',
                                         pattern: {
-                                            value: '/^\d+(\.\d+)?$/',
+                                            value: /^\d+$/,
                                             message: 'Ingrese solo números',
                                         },
                                     })}
                                     error={errors.precio}
-                                    defaultValue= {productToEdit.precio}
                                     helperText={errors.precio && errors.precio.message}
+                                    defaultValue={productToEdit.precio}
+                                />
+                                <TextField
+                                    label="Precio de compra"
+                                    type='text'
+                                    sx={{m: 2, width: '300px'}}
+                                    {...register('precioC', {
+                                        required: 'Campo requerido',
+                                        pattern: {
+                                            value: /^\d+$/,
+                                            message: 'Ingrese solo números',
+                                        },
+                                    })}
+                                    error={errors.precioC}
+                                    helperText={errors.precioC && errors.precioC.message}
+                                    defaultValue={productToEdit.precioC}
                                 />
                                 <TextField
                                     label="Cantidad"
                                     type='text'
-                                    sx={{m: 2, width: '200px'}}
+                                    sx={{m: 2, width: '300px'}}
                                     {...register('cantidad', {
                                         required: 'Campo requerido',
                                         pattern: {
@@ -103,7 +133,8 @@ const EditProduct = ({openEdit, handleOpenEdit, handleRefreshProducts, loading, 
                                     })}
                                     error={errors.cantidad}
                                     helperText={errors.cantidad && errors.cantidad.message}
-                                    defaultValue= {productToEdit.cantidad}
+                                    defaultValue={productToEdit.cantidad}
+
                                 />
 
                             </div>
@@ -111,17 +142,17 @@ const EditProduct = ({openEdit, handleOpenEdit, handleRefreshProducts, loading, 
                             {errorMessage &&
                                 <div className='error-message text-danger text-start ms-4'>{errorMessage}</div>}
 
-
                             <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
                                 <Button autoFocus onClick={handleOpenEdit} variant="contained" color='error'>
                                     Cancelar
                                 </Button>
                                 <Button variant="contained" type="submit" className={'ms-4'}>
-                                    Aceptar
+                                    Agregar
                                 </Button>
                             </DialogActions>
                         </DialogContent>
                     </form>
+
                 </Dialog>
             </div>
         </div>

@@ -110,7 +110,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     {...register('limite', {
                                         required: 'Campo requerido',
                                         pattern: {
-                                            value: '/^\d+(\.\d+)?$/',
+                                            value: /^\d+$/,
                                             message: 'Ingrese solo números',
                                         },
                                     })}
@@ -127,7 +127,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     {...register('precio', {
                                         required: 'Campo requerido',
                                         pattern: {
-                                            value: '/^\d+(\.\d+)?$/',
+                                            value: /^\d+$/,
                                             message: 'Ingrese solo números',
                                         },
                                     })}
@@ -141,7 +141,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     {...register('precioC', {
                                         required: 'Campo requerido',
                                         pattern: {
-                                            value: '/^\d+(\.\d+)?$/',
+                                            value: /^\d+$/,
                                             message: 'Ingrese solo números',
                                         },
                                     })}

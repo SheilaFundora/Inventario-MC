@@ -25,6 +25,7 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import {useForm} from "react-hook-form";
 import Typography from "@mui/material/Typography";
 import {fetchData} from "@/helper/fetch";
+import Swal from "sweetalert2";
 
 
 const Page = () => {
@@ -93,19 +94,19 @@ const Page = () => {
         const total = products.reduce((total, products) => total + products.subtotalEfectivo, 0);
         data.ipv = products;
         data.total = total;
+        data.salario = 0;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
         try {
             const resp = await fetchData(ipv, data, "POST");
+            handleOpenSave();
 
-            console.log(resp)
-
-            /*
             if (resp.status === 201) {
-                handleClick()
-            } else {
-                setErrorMessage('Error de servidor')
-            }*/
+                await Swal.fire('Exito', "Se ha creado correctamente el ipv", 'success');
+            }else{
+                await Swal.fire('Error', "Error del servidor", 'error');
+
+            }
 
         } catch (error) {
             console.log(error)
@@ -243,9 +244,11 @@ const Page = () => {
                                 label="Dependiente"
                                 type='text'
                                 sx={{m: 2, width: '450px'}}
-                                {...register('dependiente', {
+                                {...register('nombreDependienta', {
                                     required: 'Campo requerido',
                                 })}
+                                error={errors.nombreDependienta}
+                                helperText={errors.nombreDependienta && errors.nombreDependienta.message}
                             />
                             <TextField
                                 type='date'
@@ -253,6 +256,8 @@ const Page = () => {
                                 {...register('fechaIPV', {
                                     required: 'Campo requerido',
                                 })}
+                                error={errors.fechaIPV}
+                                helperText={errors.fechaIPV && errors.fechaIPV.message}
                             />
                         </div>
                         <div className={'d-flex align-items-center justify-content-between'}>
@@ -263,12 +268,12 @@ const Page = () => {
                                 {...register('transferencia', {
                                     required: 'Campo requerido',
                                     pattern: {
-                                        value: '/^\d+(\.\d+)?$/',
+                                        value: /^\d+$/,
                                         message: 'Ingrese solo números',
                                     },
                                 })}
-                                error={errors.limite}
-                                helperText={errors.limite && errors.limite.message}
+                                error={errors.transferencia}
+                                helperText={errors.transferencia && errors.transferencia.message}
                             />
 
                             <TextField
@@ -278,12 +283,12 @@ const Page = () => {
                                 {...register('otrosGastos', {
                                     required: 'Campo requerido',
                                     pattern: {
-                                        value: '/^\d+(\.\d+)?$/',
+                                        value: /^\d+$/,
                                         message: 'Ingrese solo números',
                                     },
                                 })}
-                                error={errors.limite}
-                                helperText={errors.limite && errors.limite.message}
+                                error={errors.otrosGastos}
+                                helperText={errors.otrosGastos && errors.otrosGastos.message}
                             />
                         </div>
                         <div className={'text-center ms-3'}>
