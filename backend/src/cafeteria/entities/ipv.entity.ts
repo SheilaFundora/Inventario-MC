@@ -1,5 +1,6 @@
-import {Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, JoinColumn, CreateDateColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, JoinColumn, CreateDateColumn, OneToMany} from 'typeorm';
 import { producto } from './producto.entity';
+import { ipvGlobal } from './ipvGlobal.entity';
 
 @Entity()
 export class ipv{
@@ -36,4 +37,7 @@ export class ipv{
     @ManyToOne(() => producto, (producto_id) => producto_id.ipvs, {eager: true,})
     @JoinColumn({name: 'producto_id'})
     producto_id:producto;
+    
+    @OneToMany(() => ipvGlobal, (inveGlobal) => inveGlobal.ipv_id)
+    ipvsG: ipvGlobal[]
 }
