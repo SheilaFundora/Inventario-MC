@@ -33,6 +33,11 @@ const Page = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [openSave, setOpenSave] = React.useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [refreshIPV, setRefreshIPV] = React.useState(false)
+
+    const handleRefreshIPV = () => {
+        setRefreshIPV(!refreshIPV)
+    }
 
     const handleOpenSave = () => {
         setOpenSave(!openSave)
@@ -64,7 +69,8 @@ const Page = () => {
 
     useEffect(() => {
         getProducts();
-    }, []);
+    }, [refreshIPV]);
+
     const getProducts = async () => {
         await axios.get(
             process.env.NEXT_PUBLIC_API_HOST + product
@@ -102,6 +108,7 @@ const Page = () => {
             handleOpenSave();
 
             if (resp.status === 201) {
+                handleRefreshIPV();
                 await Swal.fire('Exito', "Se ha creado correctamente el ipv", 'success');
             }else{
                 await Swal.fire('Error', "Error del servidor", 'error');
@@ -111,9 +118,8 @@ const Page = () => {
         } catch (error) {
             console.log(error)
         }
+
     }
-
-
 
     return (
         <div className={'mt-4'}>
@@ -243,28 +249,46 @@ const Page = () => {
                             <TextField
                                 label="Dependiente"
                                 type='text'
-                                sx={{m: 2, width: '450px'}}
+                                sx={{m: 2, width: '600px'}}
                                 {...register('nombreDependienta', {
                                     required: 'Campo requerido',
                                 })}
                                 error={errors.nombreDependienta}
                                 helperText={errors.nombreDependienta && errors.nombreDependienta.message}
                             />
+
                             <TextField
-                                type='date'
-                                sx={{m: 2, width: '450px'}}
-                                {...register('fechaIPV', {
+                                label="Cafetería"
+                                type='text'
+                                sx={{m: 2, width: '600px'}}
+                                {...register('nombreCafeteria', {
                                     required: 'Campo requerido',
                                 })}
-                                error={errors.fechaIPV}
-                                helperText={errors.fechaIPV && errors.fechaIPV.message}
+                                error={errors.nombreCafeteria}
+                                helperText={errors.nombreCafeteria && errors.nombreCafeteria.message}
                             />
+
+                            <TextField
+                                label="Salario %"
+                                type='text'
+                                sx={{m: 2, width: '600px'}}
+                                {...register('porcientoSalario', {
+                                    required: 'Campo requerido',
+                                    pattern: {
+                                        value: /^\d+$/,
+                                        message: 'Ingrese solo números',
+                                    },
+                                })}
+                                error={errors.porcientoSalario}
+                                helperText={errors.porcientoSalario && errors.porcientoSalario.message}
+                            />
+
                         </div>
                         <div className={'d-flex align-items-center justify-content-between'}>
                             <TextField
                                 label="Transferencia"
                                 type='text'
-                                sx={{m: 2, width: '450px'}}
+                                sx={{m: 2, width: '600px'}}
                                 {...register('transferencia', {
                                     required: 'Campo requerido',
                                     pattern: {
@@ -279,7 +303,7 @@ const Page = () => {
                             <TextField
                                 label="Otros Gastos"
                                 type='text'
-                                sx={{m: 2, width: '450px'}}
+                                sx={{m: 2, width: '600px'}}
                                 {...register('otrosGastos', {
                                     required: 'Campo requerido',
                                     pattern: {
@@ -290,7 +314,17 @@ const Page = () => {
                                 error={errors.otrosGastos}
                                 helperText={errors.otrosGastos && errors.otrosGastos.message}
                             />
+                            <TextField
+                                type='date'
+                                sx={{m: 2, width: '600px'}}
+                                {...register('fechaIPV', {
+                                    required: 'Campo requerido',
+                                })}
+                                error={errors.fechaIPV}
+                                helperText={errors.fechaIPV && errors.fechaIPV.message}
+                            />
                         </div>
+
                         <div className={'text-center ms-3'}>
                             <Typography variant="subtitle1" style={{ fontSize: '1.1rem' }}>
                                 Importe total de venta: {

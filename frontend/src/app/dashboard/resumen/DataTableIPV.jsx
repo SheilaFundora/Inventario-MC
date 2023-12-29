@@ -1,85 +1,73 @@
-'use client'
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import {InputText} from "primereact/inputtext";
-import Button from "@mui/material/Button";
 import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
-import {product} from "@/constants/apiRoutes";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import Button from "@mui/material/Button";
 import axios from "axios";
+import {ipv} from "@/constants/apiRoutes";
 import Swal from "sweetalert2";
-import EditProduct from "@/app/dashboard/producto/EditProduct";
-
-
-const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts}) => {
-    const [produtsData, setProductsData] =  React.useState(products);
-    const [openDelete, setOpenDelete] = React.useState(false);
-    const [openEdit, setOpenEdit] = React.useState(false);
+const DataTableIpv = ({ipvG}) => {
+    const [ipvData, setIpvData] =  React.useState([]);
+    const [openView, setOpenView] = React.useState(false);
     const [id, setId] = React.useState('');
-    const [productToEdit, setProductToEdit] = React.useState([]);
+    const [openDelete, setOpenDelete] = React.useState(false);
 
     useEffect( () => {
         const getData = () => {
-            setProductsData(products);
+            setIpvData(ipvG);
         }
 
         getData()
 
 
-    }, [products])
+    }, [ipvG])
 
     const actionBodyTemplate = (rowData) => {
         return (
             <>
-                <IconButton size="large" className="text-warning" onClick={() => confirmEditProduct(rowData.id)}>
-                    <EditIcon fontSize="inherit" />
+                <IconButton size="large" className="text-success" onClick={() => confirmViewIPV(rowData.id)}>
+                    <RemoveRedEyeIcon fontSize="inherit" />
                 </IconButton>
-                <IconButton size="large" color="error" onClick={() => confirmDeleteProduct(rowData.id)}>
+                <IconButton size="large" color="error" onClick={() => confirmDeleteIPV(rowData.id)}>
                     <DeleteForeverIcon  fontSize="inherit" />
                 </IconButton>
             </>
         )
     }
+    const handleOpenView= () => {
+        setOpenView(!openView);
+    }
+
+    const confirmViewIPV = (idIPV) =>{
+        handleOpenView();
+    }
+
+    const confirmDeleteIPV = (idIPV) =>{
+        setId(idIPV)
+        handleOpenDelete()
+    }
+
     const handleOpenDelete = () => {
         setOpenDelete(!openDelete);
     }
 
-    const confirmDeleteProduct = (idProduct) =>{
-        setId(idProduct)
-        handleOpenDelete()
-    }
-
-    const handleOpenEdit = () => {
-        setOpenEdit(!openEdit);
-    }
-
-    const confirmEditProduct = (idProduct) =>{
-        const _products = products.filter((val) => val.id === idProduct)
-
-        setProductToEdit(_products[0]);
-        handleOpenEdit();
-    }
-
-    const handleDeleteProduct = async () => {
-        const endpoint = product + '/' + id + '/';
+    const handleDeleteIPV= async () => {
+        const endpoint = ipv + '/' + id + '/';
         try{
             const response = await axios.delete(process.env.NEXT_PUBLIC_API_HOST + endpoint)
-            console.log(response)
 
+            console.log(response)
             if (response.status !== 200) {
                 return null
             }
 
             handleOpenDelete();
-            handleRefreshProducts();
-            setLoading(!loading);
             Swal.fire('Exito', "Se ha eliminado correctamente", 'success');
-
 
         } catch (error) {
             console.log(error);
@@ -89,19 +77,28 @@ const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts
     return (
         <div>
             <div className="datatable mt-4">
-                <DataTable value={produtsData || []}
+                <DataTable value={ipvData || []}
                            paginator rows={5}
                            rowsPerPageOptions={[5, 10, 25, 50]}
                            tableStyle={{minWidth: '50rem'}}
                            className="p-datatable-hgridlines"
                 >
-                    <Column field="nombre" header="Nombre" sortable filter style={{width: '25%'}}></Column>
-                    <Column field="cantidad" header="Cantidad" sortable style={{ width: '20%' }} body={(products) => (
-                        <div className={products.cantidad < products.limite ? 'text-danger font-weight-bold' : ''}>{products.cantidad}</div>
-                    )}></Column>
-                    <Column field="precioC" header="Precio de compra" sortable/>
-                    <Column field="precio" header="Precio de venta" sortable/>
-                    <Column field="limite" header="Límite" sortable/>
+                    <Column field="nombreCafeteria" header="Cafeteria" sortable/>
+                    <Column field="nombreDependienta" header="Dependiente" sortable/>
+                    <Column field="fechaIPV"
+                            header="Fecha"
+                            sortable
+                            body={(rowData) => {
+                                if (!rowData || !rowData.fechaIPV) {
+                                    return null;
+                                }
+                                const fechaCompleta = rowData.fechaIPV;
+                                const fechaCortada = fechaCompleta.slice(0, 10);
+                                return <div>{fechaCortada}</div>;
+                            }}
+                    />
+                    <Column field="total" header="Total" sortable/>
+
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
                 </DataTable>
             </div>
@@ -131,7 +128,7 @@ const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts
 
                 <DialogContent className='text-center'>
                     <ErrorOutlineIcon sx={{ fontSize: 60 }} color="action"  />
-                    <h4 className='mt-4'>Estás seguro de eliminar está producto</h4>
+                    <h4 className='mt-4'>Estás seguro de eliminar está ipv</h4>
                     <p>Está acción no se puede deshacer.</p>
                 </DialogContent>
 
@@ -139,26 +136,14 @@ const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts
                     <Button autoFocus onClick={handleOpenDelete} variant="contained" color='error'>
                         Cancelar
                     </Button> <br/>
-                    <Button variant="contained" onClick={handleDeleteProduct}>
+                    <Button variant="contained" onClick={handleDeleteIPV}>
                         Aceptar
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            { openEdit &&
-                <EditProduct openEdit={openEdit}
-                             handleOpenEdit={handleOpenEdit}
-                             handleRefreshProducts={handleRefreshProducts}
-                             setLoading={setLoading}
-                             loading={loading}
-                             productToEdit={productToEdit}
-                />
-            }
-
-
         </div>
-
     );
 };
 
-export default DataTableProducts;
+export default DataTableIpv;
