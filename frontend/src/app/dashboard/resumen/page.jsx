@@ -1,21 +1,23 @@
 'use client'
 import React, {useEffect, useState} from 'react';
-import Button from "@mui/material/Button";
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
-import AddProduct from "@/app/dashboard/producto/AddProduct";
-import {ipv, product} from "@/constants/apiRoutes";
+import {ipv} from "@/constants/apiRoutes";
 import axios from "axios";
-import DataTableProducts from "@/app/dashboard/producto/DataTableProducts";
 import DataTableIpv from "@/app/dashboard/resumen/DataTableIPV";
 
 export default function BasicCard() {
     const [ipvG, setIpvG] = useState([]);
+    const [refreshIpv, setRefreshIpv] = React.useState(false);
+
+    const handleRefreshIpv = () => {
+        setRefreshIpv(!refreshIpv)
+    }
 
     useEffect( () => {
         getProducts();
 
-    }, [])
+    }, [refreshIpv])
 
     const getProducts = async () => {
         await axios.get(
@@ -35,7 +37,9 @@ export default function BasicCard() {
 
             <h4 className={'pt-5 text-secondary ms-1'}>IPV </h4>
 
-            <DataTableIpv ipvG={ipvG} />
+            <DataTableIpv ipvG={ipvG}
+                          handleRefreshIpv={handleRefreshIpv}
+            />
 
         </div>
     );

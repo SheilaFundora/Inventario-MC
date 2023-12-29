@@ -100,7 +100,7 @@ const Page = () => {
         const total = products.reduce((total, products) => total + products.subtotalEfectivo, 0);
         data.ipv = products;
         data.total = total;
-        data.salario = 0;
+        data.salario = parseFloat((total * data.porcientoSalario) / 100);
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
         try {

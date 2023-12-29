@@ -11,11 +11,14 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import {ipv} from "@/constants/apiRoutes";
 import Swal from "sweetalert2";
-const DataTableIpv = ({ipvG}) => {
+import PreviewIPV from "@/app/dashboard/resumen/PreviewIPV";
+const DataTableIpv = ({ipvG, handleRefreshIpv}) => {
     const [ipvData, setIpvData] =  React.useState([]);
     const [openView, setOpenView] = React.useState(false);
     const [id, setId] = React.useState('');
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [ipvView, setIpvView] = React.useState([]);
+
 
     useEffect( () => {
         const getData = () => {
@@ -44,7 +47,11 @@ const DataTableIpv = ({ipvG}) => {
     }
 
     const confirmViewIPV = (idIPV) =>{
+        const _ipv = ipvG.filter((val) => val.id === idIPV)
+
+        setIpvView(_ipv[0])
         handleOpenView();
+
     }
 
     const confirmDeleteIPV = (idIPV) =>{
@@ -65,7 +72,7 @@ const DataTableIpv = ({ipvG}) => {
             if (response.status !== 200) {
                 return null
             }
-
+            handleRefreshIpv();
             handleOpenDelete();
             Swal.fire('Exito', "Se ha eliminado correctamente", 'success');
 
@@ -98,7 +105,7 @@ const DataTableIpv = ({ipvG}) => {
                             }}
                     />
                     <Column field="total" header="Total" sortable/>
-
+                    <Column field="salario" header="salario" sortable/>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
                 </DataTable>
             </div>
@@ -141,6 +148,15 @@ const DataTableIpv = ({ipvG}) => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            {
+                openView &&
+                <PreviewIPV openView={openView}
+                            handleOpenView={handleOpenView}
+                            ipvToView={ipvView}
+                />
+            }
+
 
         </div>
     );
