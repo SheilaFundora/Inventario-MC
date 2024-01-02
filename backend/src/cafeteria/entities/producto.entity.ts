@@ -16,5 +16,5 @@ export class producto{
     @Column({nullable:true})
     limite:number;
     @OneToMany(() => ipv, (inventario) => inventario.producto_id)
-    ipvs: ipv[]
+    ipvs: ipv[];
 }

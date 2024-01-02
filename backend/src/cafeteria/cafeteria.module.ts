@@ -10,14 +10,20 @@ import { ipv } from './entities/ipv.entity';
 import { ipvGService } from './services/ipvG.service';
 import { ivpGController } from './controllers/ipvG.controller';
 import { ipvGlobal } from './entities/ipvGlobal.entity';
+import { cafeteria } from './entities/cafeteria.entity';
+import { dependiente } from './entities/dependiente.entity';
+import { dependienteService } from './services/dependiente.service';
+import { cafeteriaService } from './services/cafeteria.service';
+import { cafeteriaController } from './controllers/cafeteria.controller';
+import { dependienteController } from './controllers/dependiente.controller';
 
 
 @Module({
     imports:[
-      TypeOrmModule.forFeature([producto,ipv,ipvGlobal])
+      TypeOrmModule.forFeature([producto,ipv,ipvGlobal,cafeteria,dependiente])
     ],
-    providers: [productoService,ipvService, ipvGService],
-    controllers: [productoController,ivpController, ivpGController]
+    providers: [productoService,ipvService, ipvGService,dependienteService,cafeteriaService],
+    controllers: [productoController,ivpController, ivpGController,cafeteriaController, dependienteController]
   
   })
   export class productos {

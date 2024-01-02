@@ -2,6 +2,7 @@ import { Injectable, Body, Delete } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository} from 'typeorm'
 import { ipvGlobal } from '../entities/ipvGlobal.entity';
+import { CreateIPVGDto } from '../dto/create-ipv-global.dto';
 
 
 
@@ -16,17 +17,17 @@ export class ipvGService {
     )
     {}
 
-    findAll()
+    async findAll(): Promise<ipvGlobal[]>
     {
-    return  this.ipvGRepo.find();
+    return  this.ipvGRepo.find({relations:['ipv_id']});
     }
 
-    getId(id: number)
+    async getId(id: number): Promise<ipvGlobal>
     {
         return this.ipvGRepo.findOneBy({id});
     }
 
-    create(body:any){
+    async create(body:any){
         const newIPV = this.ipvGRepo.create(body);
         return this.ipvGRepo.save(newIPV);
     }

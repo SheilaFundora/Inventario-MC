@@ -1,3 +1,4 @@
+import { ipv } from "../entities/ipv.entity";
 import { ipvGlobal } from "../entities/ipvGlobal.entity";
 
 
@@ -14,4 +15,5 @@ export class CreateIPVGDto{
     nombreCafeteria:string
     porcientoSalario:string;
     fechaIPV:string;
+    ipv_id:ipv;
 }

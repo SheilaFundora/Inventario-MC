@@ -1,5 +1,6 @@
 import { ipv } from "../entities/ipv.entity";
 import { ipvGlobal } from "../entities/ipvGlobal.entity";
+import { producto } from "../entities/producto.entity";
 
 
 export class CreateIPVDto{
@@ -12,12 +13,6 @@ export class CreateIPVDto{
     venta: number;
     subtotalEfectivo:string;
     existenciaFinal:number;
-    total:string;
-    transferencia:string;
-    salario:string;
-    totalEfectivo:string;
-    otrosGastos:string;
-    nombreDependienta:string;
-    fechaIPV:string;
-    ipvsG:Array<ipvGlobal>;
+    ipvsG:ipvGlobal[];
+    producto_id:producto;
 }

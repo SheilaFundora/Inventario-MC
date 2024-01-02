@@ -8,7 +8,7 @@ export class CreateProductoDto{
     nombre: string;
     cantidad: number;
     precio:string;
-    ipvs:Array<ipv>;
+    ipvs:ipv[];
     limite:number;
     precioC:string;
 

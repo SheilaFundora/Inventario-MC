@@ -1,6 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, JoinColumn, CreateDateColumn, OneToMany} from 'typeorm';
 import { producto } from './producto.entity';
 import { ipvGlobal } from './ipvGlobal.entity';
+import { dependiente } from './dependiente.entity';
 
 @Entity()
 export class ipv{
@@ -18,26 +19,17 @@ export class ipv{
     subtotalEfectivo:string;
     @Column({nullable:false})
     existenciaFinal:number;
-    @Column({nullable:false, type:'float'})
-    total:string;
-    @Column({nullable:false, type:'float'})
-    transferencia:string;
-    @Column({nullable:false, type:'float'})
-    salario:string;
-    @Column({nullable:false, type:'float'})
-    totalEfectivo:string;
-    @Column({nullable:false, type:'float'})
-    otrosGastos:string;
-    @Column({nullable:true})
-    nombreDependienta:string;
-    @CreateDateColumn({ type: "timestamp without time zone", default: () => "CURRENT_TIMESTAMP" , nullable: true})
-    fechaIPV: string;
+
     
 
     @ManyToOne(() => producto, (producto_id) => producto_id.ipvs, {eager: true,onDelete:'CASCADE'})
     @JoinColumn({name: 'producto_id'})
     producto_id:producto;
     
-    @OneToMany(() => ipvGlobal, (inveGlobal) => inveGlobal.ipv_id)
-    ipvsG: ipvGlobal[]
+    @OneToMany(() => ipvGlobal, inveGlobal => inveGlobal.ipv_id)
+    ipvsG: ipvGlobal[];
+
+    @ManyToOne(() => dependiente, (dependiente_id) => dependiente_id.ipvs, {eager: true,onDelete:'CASCADE'})
+    @JoinColumn({name: 'dependiente_id'})
+    dependiente_id:dependiente;
 }

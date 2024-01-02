@@ -2,6 +2,8 @@ import { Injectable, Body, Delete } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository} from 'typeorm'
 import { ipv } from '../entities/ipv.entity';
+import { promises } from 'dns';
+import { CreateIPVDto } from '../dto/create-ipv.dto';
 
 
 
@@ -16,17 +18,18 @@ export class ipvService {
     )
     {}
 
-    findAll()
+    async findAll(): Promise<ipv[]>
     {
-    return  this.ipvRepo.find();
+    return  this.ipvRepo.find({relations:['ipvsG']});
     }
 
-    getId(id: number)
+    async getId(id: number): Promise<ipv>
     {
+
         return this.ipvRepo.findOneBy({id});
     }
 
-    create(body:any){
+    create(body:CreateIPVDto){
         const newIPV = this.ipvRepo.create(body);
         return this.ipvRepo.save(newIPV);
     }
