@@ -1,5 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, JoinColumn, CreateDateColumn} from 'typeorm';
 import { ipv } from './ipv.entity';
+import { cafeteria } from './cafeteria.entity';
 
 @Entity()
 export class ipvGlobal{
@@ -28,4 +29,10 @@ export class ipvGlobal{
     @ManyToOne(() => ipv, ipv_id => ipv_id.ipvsG, {eager: true,onDelete:'CASCADE'})
     @JoinColumn({name: 'ipv_id'})
     ipv_id:ipv;
+
+    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.ipvsG, {eager: true,onDelete:'CASCADE'})
+    @JoinColumn({name: 'cafeteria_id'})
+    cafeteria_id:cafeteria;
+
+
 }
