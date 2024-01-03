@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
-import {ipv} from "@/constants/apiRoutes";
+import { ipv_endpoint} from "@/constants/apiRoutes";
 import axios from "axios";
 import DataTableIpv from "@/app/dashboard/resumen/DataTableIPV";
 import Swal from "sweetalert2";
@@ -23,7 +23,7 @@ export default function BasicCard() {
     const getProducts = async () => {
         try{
             await axios.get(
-                process.env.NEXT_PUBLIC_API_HOST + ipv
+                process.env.NEXT_PUBLIC_API_HOST + ipv_endpoint
             )
                 .then(response => {
                     console.log(

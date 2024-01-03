@@ -5,7 +5,7 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import Button from "@mui/material/Button";
 import {useForm} from "react-hook-form";
 import {fetchData} from "@/helper/fetch";
-import {product} from "@/constants/apiRoutes";
+import {product_endpoint} from "@/constants/apiRoutes";
 import Swal from "sweetalert2";
 
 const EditProduct = ({openEdit, handleOpenEdit, handleRefreshProducts, loading, setLoading, productToEdit}) => {
@@ -13,7 +13,7 @@ const EditProduct = ({openEdit, handleOpenEdit, handleRefreshProducts, loading, 
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleEditProduct = async (data) => {
-        const endpoint = product + '/' + productToEdit.id +'/'
+        const endpoint = product_endpoint + '/' + productToEdit.id +'/'
 
         try {
             const resp = await fetchData(endpoint, data, "PUT");

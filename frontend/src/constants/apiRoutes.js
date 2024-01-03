@@ -1,6 +1,9 @@
-export const product = '/api/cafeteria/producto'
+export const product_endpoint = '/api/cafeteria/producto'
+export const ipv_endpoint = '/api/cafeteria/ipvG'
+export const store_endpoint = '/api/cafeteria/cafeteria'
 
-export const ipv = '/api/cafeteria/ipvG'
+export const dependent_endpoint = '/api/cafeteria/dependiente'
+
 
 
 

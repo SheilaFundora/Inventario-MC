@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import {useForm} from "react-hook-form";
-import {product} from "@/constants/apiRoutes";
+import { product_endpoint} from "@/constants/apiRoutes";
 import {fetchData} from "@/helper/fetch";
 import Swal from "sweetalert2";
 import IconButton from "@mui/material/IconButton";
@@ -41,7 +41,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
     const handleSubmitProduct = async (data) => {
 
         try {
-            const resp = await fetchData(product, data, "POST");
+            const resp = await fetchData(product_endpoint, data, "POST");
 
             if (resp.status === 400) {
                 setErrorMessage('El producto ya existe')

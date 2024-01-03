@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {ipv, product} from "@/constants/apiRoutes";
+import {ipv_endpoint, product_endpoint} from "@/constants/apiRoutes";
 import {
     Dialog,
     DialogActions,
@@ -74,7 +74,7 @@ const Page = () => {
     const getProducts = async () => {
         try{
             await axios.get(
-                process.env.NEXT_PUBLIC_API_HOST + product
+                process.env.NEXT_PUBLIC_API_HOST + product_endpoint
             )
                 .then(response => {
                     const newData = response.data.map((objeto) => ({
@@ -108,7 +108,7 @@ const Page = () => {
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
         try {
-            const resp = await fetchData(ipv, data, "POST");
+            const resp = await fetchData(ipv_endpoint, data, "POST");
             handleOpenSave();
 
             if (resp.status === 201) {
