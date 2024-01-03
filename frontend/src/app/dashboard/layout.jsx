@@ -23,6 +23,8 @@ import {usePathname} from "next/navigation";
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import CalculateIcon from '@mui/icons-material/Calculate';
+import StoreIcon from '@mui/icons-material/Store';
+import PeopleIcon from '@mui/icons-material/People';
 
 const drawerWidth = 200;
 
@@ -163,6 +165,30 @@ export default function PersistentDrawerLeft({children}) {
                             </Link>
                         </ListItem>
                         <ListItem disablePadding>
+                            <Link href={'/dashboard/cafeteria/'}
+                                  className={`link-sidebar ${pathname === '/dashboard/cafeteria/' ? 'active' : ''}`}
+                            >
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <StoreIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>Cafeterias</ListItemText>
+                                </ListItemButton>
+                            </Link>
+                        </ListItem>
+                        <ListItem disablePadding>
+                            <Link href={'/dashboard/dependent/'}
+                                  className={`link-sidebar ${pathname === '/dashboard/dependent/' ? 'active' : ''}`}
+                            >
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <PeopleIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>Dependientes</ListItemText>
+                                </ListItemButton>
+                            </Link>
+                        </ListItem>
+                        <ListItem disablePadding>
                             <Link href={'/dashboard/producto/'}
                                   className={`link-sidebar ${pathname === '/dashboard/producto/' ? 'active' : ''}`}
                             >
@@ -170,7 +196,7 @@ export default function PersistentDrawerLeft({children}) {
                                     <ListItemIcon>
                                         <ProductionQuantityLimitsIcon />
                                     </ListItemIcon>
-                                    <ListItemText>Producto</ListItemText>
+                                    <ListItemText>Productos</ListItemText>
                                 </ListItemButton>
                             </Link>
                         </ListItem>

@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {ipv, product} from "@/constants/apiRoutes";
+import {ipv_endpoint, product_endpoint} from "@/constants/apiRoutes";
 import {
     Dialog,
     DialogActions,
@@ -72,22 +72,26 @@ const Page = () => {
     }, [refreshIPV]);
 
     const getProducts = async () => {
-        await axios.get(
-            process.env.NEXT_PUBLIC_API_HOST + product
-        )
-            .then(response => {
-                const newData = response.data.map((objeto) => ({
-                    ...objeto,
-                    entrada: 0,
-                    traslado: 0,
-                    venta: 0,
-                    merma: 0,
-                    subtotalEfectivo: 0,
-                    existenciaFinal: 0
-                }));
-                setProducts(newData);
-            })
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + product_endpoint
+            )
+                .then(response => {
+                    const newData = response.data.map((objeto) => ({
+                        ...objeto,
+                        entrada: 0,
+                        traslado: 0,
+                        venta: 0,
+                        merma: 0,
+                        subtotalEfectivo: 0,
+                        existenciaFinal: 0
+                    }));
+                    setProducts(newData);
+                })
+        }catch (error) {
+            await Swal.fire('Error', "Error del servidor", 'error');
 
+        }
     }
     const handleEdit = (id, field, value) => {
         const updatedData = products.map((row) =>
@@ -104,7 +108,7 @@ const Page = () => {
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
         try {
-            const resp = await fetchData(ipv, data, "POST");
+            const resp = await fetchData(ipv_endpoint, data, "POST");
             handleOpenSave();
 
             if (resp.status === 201) {
@@ -112,7 +116,6 @@ const Page = () => {
                 await Swal.fire('Exito', "Se ha creado correctamente el ipv", 'success');
             }else{
                 await Swal.fire('Error', "Error del servidor", 'error');
-
             }
 
         } catch (error) {

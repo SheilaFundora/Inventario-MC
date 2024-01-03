@@ -4,9 +4,10 @@ import Button from "@mui/material/Button";
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
 import AddProduct from "@/app/dashboard/producto/AddProduct";
-import {product} from "@/constants/apiRoutes";
+import {product_endpoint} from "@/constants/apiRoutes";
 import axios from "axios";
 import DataTableProducts from "@/app/dashboard/producto/DataTableProducts";
+import Swal from "sweetalert2";
 
 export default function BasicCard() {
     const [openAddProduct, setOpenAddProduct] = useState(false);
@@ -28,14 +29,19 @@ export default function BasicCard() {
     }, [refreshProducts])
 
     const getProducts = async () => {
-        await axios.get(
-            process.env.NEXT_PUBLIC_API_HOST + product
-        )
-            .then(response => {
-                setProducts(response.data);
-            })
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + product_endpoint
+            )
+                .then(response => {
+                    setProducts(response.data);
+                })
 
-        setLoading(!loading);
+            setLoading(!loading);
+        }catch (error) {
+            await Swal.fire('Error', "Error del servidor", 'error');
+
+        }
     }
 
     return (
