@@ -26,11 +26,9 @@ export class dependienteController {
 
     @Post()
     async create(@Body() CreateDependienteDto:CreateDependienteDto){
-        try {
+
             return await this.dependienteService.create(CreateDependienteDto);
-          } catch (error) {
-            throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-          }
+
         }
 
     

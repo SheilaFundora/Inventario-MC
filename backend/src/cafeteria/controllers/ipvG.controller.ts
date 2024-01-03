@@ -26,11 +26,9 @@ export class ivpGController {
 
     @Post()
     async create(@Body() body: {CreateIPVGDto:CreateIPVGDto}){
-            try {
+
                 return await this.ipvGService.create(CreateIPVGDto);
-              } catch (error) {
-                throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-              }
+
             }
 
     

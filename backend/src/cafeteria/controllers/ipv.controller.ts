@@ -25,11 +25,9 @@ export class ivpController {
 
     @Post()
     async create(@Body() CreateIPVDto:CreateIPVDto){
-        try {
+
             return await this.ipvService.create(CreateIPVDto);
-          } catch (error) {
-            throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-          }
+
         }
 
     

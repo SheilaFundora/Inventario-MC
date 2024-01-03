@@ -1,6 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn, Unique, OneToMany, ManyToOne, JoinColumn} from 'typeorm';
 import { cafeteria } from './cafeteria.entity';
 import { ipv } from './ipv.entity';
+import { ipvGlobal } from './ipvGlobal.entity';
 
 
 @Entity()
@@ -12,9 +13,8 @@ export class dependiente{
     @Column({nullable:false})
     numeroT:number;
     
-    @OneToMany(() => cafeteria, (cafeteria) => cafeteria.dependiente_id)
-    cafeterias: cafeteria[];
-    
+    @OneToMany(() => ipvGlobal, (ipvG) => ipvG.dependiente_id)
+    ipvsG: ipvGlobal[];
 
 
 }

@@ -28,11 +28,9 @@ export class cafeteriaController {
 
     @Post()
     async create(@Body() CreateCafeteriaDto:CreateCafeteriaDto){
-        try {
+
             return await this.cafeteriaService.create(CreateCafeteriaDto);
-          } catch (error) {
-            throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-          }
+
         }
 
     

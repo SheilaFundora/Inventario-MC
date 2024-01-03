@@ -1,6 +1,7 @@
 import { cafeteria } from "../entities/cafeteria.entity";
 import { ipv } from "../entities/ipv.entity";
 import { ipvGlobal } from "../entities/ipvGlobal.entity";
+import { dependiente } from '../entities/dependiente.entity';
 
 
 export class CreateIPVGDto{
@@ -18,4 +19,5 @@ export class CreateIPVGDto{
     fechaIPV:string;
     ipv_id:ipv;
     cafeteria_id:cafeteria;
+    dependiente_id:dependiente;
 }

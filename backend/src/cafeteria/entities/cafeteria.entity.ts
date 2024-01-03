@@ -14,7 +14,5 @@ export class cafeteria{
     salario:string;
     @OneToMany(() => ipvGlobal, (ipvG) => ipvG.cafeteria_id)
     ipvsG: ipvGlobal[];
-    @ManyToOne(() => dependiente, (dependiente_id) => dependiente_id.cafeterias, {eager: true,onDelete:'CASCADE'})
-    @JoinColumn({name: 'dependiente_id'})
-    dependiente_id:dependiente;
+
 }

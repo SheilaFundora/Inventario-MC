@@ -1,8 +1,9 @@
-import { Injectable, Body, Delete, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, Body, Delete, BadRequestException, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository} from 'typeorm'
 import { producto } from '../entities/producto.entity';
 import { cafeteria } from '../entities/cafeteria.entity';
+import { CreateCafeteriaDto } from '../dto/create-cafeteria.dto';
 
 
 @Injectable()
@@ -25,13 +26,15 @@ export class cafeteriaService {
         return this.cafeteriaRep.findOneBy({id});
     }
 
-    async create(cafeteria: cafeteria): Promise<cafeteria> {
-        const existingCafeteria = await this.cafeteriaRep.findOne({where:cafeteria});
-    
-        if (existingCafeteria) {
-          throw new NotFoundException('Cafeteria with this name already exists');
+    async create(cafeteria: CreateCafeteriaDto): Promise<cafeteria> {
+        const caf = await this.cafeteriaRep.find();
+
+        for (const cafe of caf){
+
+           if (cafe.nombre===cafeteria.nombre){
+               throw new HttpException('Cafeteria with this name already exists',HttpStatus.BAD_REQUEST);
+           }
         }
-    
         const newCafeteria = this.cafeteriaRep.create(cafeteria);
         return this.cafeteriaRep.save(newCafeteria);
       }

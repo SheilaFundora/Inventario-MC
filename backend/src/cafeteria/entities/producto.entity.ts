@@ -5,7 +5,7 @@ import { ipv } from './ipv.entity';
 export class producto{
     @PrimaryGeneratedColumn()
     id:number;
-    @Column({nullable:false, unique:true})
+    @Column({nullable:false})
     nombre:string;
     @Column({nullable:false})
     cantidad:number;

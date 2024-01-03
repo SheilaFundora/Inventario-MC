@@ -24,11 +24,9 @@ export class productoController {
 
     @Post()
     async create(@Body() CreateProductoDto:CreateProductoDto){
-        try {
+
             return await this.productoService.create(CreateProductoDto);
-          } catch (error) {
-            throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-          }
+
         }
 
     

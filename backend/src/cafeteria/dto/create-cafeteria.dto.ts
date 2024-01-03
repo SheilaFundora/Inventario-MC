@@ -10,7 +10,7 @@ export class CreateCafeteriaDto{
     nombre: string;
     salario: string;
     ipvsG: ipvGlobal[];
-    dependiente_id:dependiente;
+
 
 
 }

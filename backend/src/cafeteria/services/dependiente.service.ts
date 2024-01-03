@@ -1,9 +1,10 @@
-import { Injectable, Body, Delete, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, Body, Delete, BadRequestException, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository} from 'typeorm'
 import { producto } from '../entities/producto.entity';
 import { cafeteria } from '../entities/cafeteria.entity';
 import { dependiente } from '../entities/dependiente.entity';
+import { CreateDependienteDto } from '../dto/create-dependiente.dto';
 
 
 @Injectable()
@@ -26,11 +27,14 @@ export class dependienteService {
         return this.dependienteRep.findOneBy({id});
     }
 
-    async create(dependiente: dependiente): Promise<dependiente> {
-        const existingDependiente = await this.dependienteRep.findOne({where:dependiente});
-    
-        if (existingDependiente) {
-          throw new NotFoundException('Clerk with this name already exists');
+    async create(dependiente: CreateDependienteDto): Promise<dependiente> {
+        const dep = await this.dependienteRep.find();
+
+        for (const depe of dep){
+
+           if (depe.nombre===dependiente.nombre){
+               throw new HttpException('Dependiente with this name already exists',HttpStatus.BAD_REQUEST);
+           }
         }
     
         const newCafeteria = this.dependienteRep.create(dependiente);
