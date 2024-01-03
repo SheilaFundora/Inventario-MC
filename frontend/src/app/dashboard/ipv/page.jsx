@@ -72,22 +72,26 @@ const Page = () => {
     }, [refreshIPV]);
 
     const getProducts = async () => {
-        await axios.get(
-            process.env.NEXT_PUBLIC_API_HOST + product
-        )
-            .then(response => {
-                const newData = response.data.map((objeto) => ({
-                    ...objeto,
-                    entrada: 0,
-                    traslado: 0,
-                    venta: 0,
-                    merma: 0,
-                    subtotalEfectivo: 0,
-                    existenciaFinal: 0
-                }));
-                setProducts(newData);
-            })
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + product
+            )
+                .then(response => {
+                    const newData = response.data.map((objeto) => ({
+                        ...objeto,
+                        entrada: 0,
+                        traslado: 0,
+                        venta: 0,
+                        merma: 0,
+                        subtotalEfectivo: 0,
+                        existenciaFinal: 0
+                    }));
+                    setProducts(newData);
+                })
+        }catch (error) {
+            await Swal.fire('Error', "Error del servidor", 'error');
 
+        }
     }
     const handleEdit = (id, field, value) => {
         const updatedData = products.map((row) =>
@@ -112,7 +116,6 @@ const Page = () => {
                 await Swal.fire('Exito', "Se ha creado correctamente el ipv", 'success');
             }else{
                 await Swal.fire('Error', "Error del servidor", 'error');
-
             }
 
         } catch (error) {

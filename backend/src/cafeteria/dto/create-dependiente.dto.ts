@@ -8,10 +8,9 @@ export class CreateDependienteDto{
 
 
 
-    cafeteria_id:cafeteria;
-    ipvs: ipv[];
+
     id:number;
     nombre: string;
     numeroT: number;
-
+    cafeterias: cafeteria[];
 }

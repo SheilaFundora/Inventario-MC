@@ -29,7 +29,5 @@ export class ipv{
     @OneToMany(() => ipvGlobal, inveGlobal => inveGlobal.ipv_id)
     ipvsG: ipvGlobal[];
 
-    @ManyToOne(() => dependiente, (dependiente_id) => dependiente_id.ipvs, {eager: true,onDelete:'CASCADE'})
-    @JoinColumn({name: 'dependiente_id'})
-    dependiente_id:dependiente;
+
 }

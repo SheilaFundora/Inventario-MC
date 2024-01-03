@@ -5,6 +5,7 @@ import 'primereact/resources/primereact.min.css'
 import {ipv} from "@/constants/apiRoutes";
 import axios from "axios";
 import DataTableIpv from "@/app/dashboard/resumen/DataTableIPV";
+import Swal from "sweetalert2";
 
 export default function BasicCard() {
     const [ipvG, setIpvG] = useState([]);
@@ -20,16 +21,19 @@ export default function BasicCard() {
     }, [refreshIpv])
 
     const getProducts = async () => {
-        await axios.get(
-            process.env.NEXT_PUBLIC_API_HOST + ipv
-        )
-            .then(response => {
-                console.log(
-                    response
-                )
-                setIpvG(response.data);
-            })
-
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + ipv
+            )
+                .then(response => {
+                    console.log(
+                        response
+                    )
+                    setIpvG(response.data);
+                })
+        }catch (error) {
+            await Swal.fire('Error', "Error del servidor", 'error');
+        }
     }
 
     return (

@@ -11,9 +11,10 @@ export class dependiente{
     nombre:string;
     @Column({nullable:false})
     numeroT:number;
-    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.dependientes, {eager: true,onDelete:'CASCADE'})
-    @JoinColumn({name: 'cafeteria_id'})
-    cafeteria_id:cafeteria;
-    @OneToMany(() => ipv, (ipv) => ipv.dependiente_id)
-    ipvs: ipv[];
+    
+    @OneToMany(() => cafeteria, (cafeteria) => cafeteria.dependiente_id)
+    cafeterias: cafeteria[];
+    
+
+
 }
