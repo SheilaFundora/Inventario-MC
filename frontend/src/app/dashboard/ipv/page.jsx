@@ -26,13 +26,13 @@ import {useForm} from "react-hook-form";
 import Typography from "@mui/material/Typography";
 import {fetchData} from "@/helper/fetch";
 import Swal from "sweetalert2";
+import SaveInventory from "@/app/dashboard/ipv/SaveInventory";
 
 
 const Page = () => {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [openSave, setOpenSave] = React.useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm();
     const [refreshIPV, setRefreshIPV] = React.useState(false)
 
     const handleRefreshIPV = () => {
@@ -93,6 +93,7 @@ const Page = () => {
 
         }
     }
+
     const handleEdit = (id, field, value) => {
         const updatedData = products.map((row) =>
             row.id === id ? { ...row, [field]: value } : row
@@ -100,29 +101,6 @@ const Page = () => {
         setProducts(updatedData);
     };
 
-    const handleSubmitIPV =  async (data) => {
-        const total = products.reduce((total, products) => total + products.subtotalEfectivo, 0);
-        data.ipv = products;
-        data.total = total;
-        data.salario = parseFloat((total * data.porcientoSalario) / 100);
-        data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
-
-        try {
-            const resp = await fetchData(ipv_endpoint, data, "POST");
-            handleOpenSave();
-
-            if (resp.status === 201) {
-                handleRefreshIPV();
-                await Swal.fire('Exito', "Se ha creado correctamente el ipv", 'success');
-            }else{
-                await Swal.fire('Error', "Error del servidor", 'error');
-            }
-
-        } catch (error) {
-            console.log(error)
-        }
-
-    }
 
     return (
         <div className={'mt-4'}>
@@ -221,136 +199,10 @@ const Page = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-
-            <Dialog
-                onClose={handleOpenSave}
-                aria-labelledby="customized-dialog-title"
-                open={openSave}
-                className={'p-5'}
-            >
-
-                <DialogTitle sx={{m: 0, p: 2}} id="customized-dialog-title">
-                </DialogTitle>
-
-                <IconButton
-                    aria-label="close"
-                    onClick={handleOpenSave}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon/>
-                </IconButton>
-
-                <form onSubmit={handleSubmit(handleSubmitIPV)}>
-                    <DialogContent>
-                        <h4 className='mt-4'>Estás seguro de guardar este inventario</h4>
-                        <div className={'d-flex align-items-center justify-content-between'}>
-                            <TextField
-                                label="Dependiente"
-                                type='text'
-                                sx={{m: 2, width: '600px'}}
-                                {...register('nombreDependienta', {
-                                    required: 'Campo requerido',
-                                })}
-                                error={errors.nombreDependienta}
-                                helperText={errors.nombreDependienta && errors.nombreDependienta.message}
-                            />
-
-                            <TextField
-                                label="Cafetería"
-                                type='text'
-                                sx={{m: 2, width: '600px'}}
-                                {...register('nombreCafeteria', {
-                                    required: 'Campo requerido',
-                                })}
-                                error={errors.nombreCafeteria}
-                                helperText={errors.nombreCafeteria && errors.nombreCafeteria.message}
-                            />
-
-                            <TextField
-                                label="Salario %"
-                                type='text'
-                                sx={{m: 2, width: '600px'}}
-                                {...register('porcientoSalario', {
-                                    required: 'Campo requerido',
-                                    pattern: {
-                                        value: /^\d+$/,
-                                        message: 'Ingrese solo números',
-                                    },
-                                })}
-                                error={errors.porcientoSalario}
-                                helperText={errors.porcientoSalario && errors.porcientoSalario.message}
-                            />
-
-                        </div>
-                        <div className={'d-flex align-items-center justify-content-between'}>
-                            <TextField
-                                label="Transferencia"
-                                type='text'
-                                sx={{m: 2, width: '600px'}}
-                                {...register('transferencia', {
-                                    required: 'Campo requerido',
-                                    pattern: {
-                                        value: /^\d+$/,
-                                        message: 'Ingrese solo números',
-                                    },
-                                })}
-                                error={errors.transferencia}
-                                helperText={errors.transferencia && errors.transferencia.message}
-                            />
-
-                            <TextField
-                                label="Otros Gastos"
-                                type='text'
-                                sx={{m: 2, width: '600px'}}
-                                {...register('otrosGastos', {
-                                    required: 'Campo requerido',
-                                    pattern: {
-                                        value: /^\d+$/,
-                                        message: 'Ingrese solo números',
-                                    },
-                                })}
-                                error={errors.otrosGastos}
-                                helperText={errors.otrosGastos && errors.otrosGastos.message}
-                            />
-                            <TextField
-                                type='date'
-                                sx={{m: 2, width: '600px'}}
-                                {...register('fechaIPV', {
-                                    required: 'Campo requerido',
-                                })}
-                                error={errors.fechaIPV}
-                                helperText={errors.fechaIPV && errors.fechaIPV.message}
-                            />
-                        </div>
-
-                        <div className={'text-center ms-3'}>
-                            <Typography variant="subtitle1" style={{ fontSize: '1.1rem' }}>
-                                Importe total de venta: {
-                                products.reduce((total, products) => total + products.subtotalEfectivo, 0)
-                            }
-                            </Typography>
-                        </div>
-
-
-                        <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
-                            <Button autoFocus onClick={handleOpenSave} variant="contained" color='error'>
-                                Cancelar
-                            </Button> <br/>
-                            <Button variant="contained"  type="submit" className={'ms-4'}>
-                                Aceptar
-                            </Button>
-                        </DialogActions>
-                    </DialogContent>
-
-
-                </form>
-
-            </Dialog>
+            {
+                openSave &&
+                <SaveInventory handleOpenSave={handleOpenSave} openSave={openSave} products={products}/>
+            }
         </div>
     );
 };
