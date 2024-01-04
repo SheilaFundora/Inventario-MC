@@ -12,47 +12,13 @@ import axios from "axios";
 const AddStore = ({openAddStore, setLoading, loading, handleOpenAddStore, handleRefreshStores}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
-    const [dependents, setDependents] = React.useState([]);
-
-    const [selectedDependents, setSelectedDependents] = useState([]);
-
-    const handleDependentSelection = (event) => {
-        const { value } = event.target;
-        setSelectedDependents(value);
-    };
-
-    useEffect( () => {
-        if(openAddStore){
-            getDataForm();
-        }
-
-    }, [openAddStore])
-
-    const getDataForm = async () => {
-        try{
-            await axios.get(
-                process.env.NEXT_PUBLIC_API_HOST + dependent_endpoint
-            )
-                .then(response => {
-                    setDependents(response.data);
-                })
-
-        }catch (error) {
-            await Swal.fire('Error', "Error del servidor", 'error');
-
-        }
-    }
 
     const handleSubmitStore = async (data) => {
-        console.log(data)
-        console.log(selectedDependents)
-
-        // hay q hacer un for sobre todos los select
-       /* try {
+        try {
             const resp = await fetchData(store_endpoint, data, "POST");
 
             if (resp.status === 400) {
-                setErrorMessage('El dependente ya existe')
+                setErrorMessage('La cafeteria ya existe')
 
             }else{
                 if (resp.status === 201) {
@@ -66,7 +32,7 @@ const AddStore = ({openAddStore, setLoading, loading, handleOpenAddStore, handle
         } catch (error) {
             console.log(error)
         }
-        setLoading(!loading);*/
+        setLoading(!loading);
     }
 
     return (
@@ -95,44 +61,18 @@ const AddStore = ({openAddStore, setLoading, loading, handleOpenAddStore, handle
                     <DialogContent>
                         <h4 className='mt-4 text-center'>Formulario para agregar Cafeterias</h4>
 
-                        <TextField
-                            label="Nombre"
-                            type='text'
-                            sx={{m: 2, width: '500px'}}
-                            {...register("nombre", {
-                                required: 'Campo requerido'
-                            })}
-                            error={errors.nombre}
-                            helperText={errors.nombre && errors.nombre.message}
-                        />
 
                         <div className={'d-flex w-100 align-items-center justify-content-between'}>
-                            <Controller
-                                name={'dependiente_id'}
-                                control={control}
-                                defaultValue=""
-                                render={({ field }) => (
-                                    <TextField
-                                        select
-                                        required={true}
-                                        label={'Dependientes'}
-                                        value={'selectedDependents'} // Muestra todos los nombres seleccionados separados por comas
-                                        onChange={handleDependentSelection}
-                                        sx={{ m: 2, width: '300px' }}
-                                        SelectProps={{
-                                            multiple: true,
-                                            renderValue: (selected) => selected.join(', '), // Muestra todos los nombres seleccionados separados por comas
-                                        }}
-                                    >
-                                        {dependents.map((option) => (
-                                            <MenuItem key={option.id} value={option.id}>
-                                                {option.nombre}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                )}
+                            <TextField
+                                label="Nombre"
+                                type='text'
+                                sx={{m: 2, width: '500px'}}
+                                {...register("nombre", {
+                                    required: 'Campo requerido'
+                                })}
+                                error={errors.nombre}
+                                helperText={errors.nombre && errors.nombre.message}
                             />
-
                             <TextField
                                 label="Salario"
                                 type='text'

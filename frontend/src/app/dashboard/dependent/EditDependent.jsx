@@ -94,7 +94,7 @@ const EditDependent = ({openEdit, handleOpenEdit, handleRefreshDependents, setLo
                                 Cancelar
                             </Button>
                             <Button variant="contained" type="submit" className={'ms-4'}>
-                                Agregar
+                                Aceptar
                             </Button>
                         </DialogActions>
                     </DialogContent>
