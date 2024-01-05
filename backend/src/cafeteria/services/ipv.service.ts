@@ -63,6 +63,7 @@ export class ipvService {
         
         
         inv.producto_id=body.producto_id;
+        inv.ipvG_id=body.ipvG_id;
         this.ipvRepo.merge(inv, body);
         return this.ipvRepo.save(inv);
     }
