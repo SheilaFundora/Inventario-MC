@@ -19,15 +19,17 @@ export class ipv{
     subtotalEfectivo:string;
     @Column({nullable:false})
     existenciaFinal:number;
-
+    @Column({nullable:false, default:false,type:'boolean'})
+    estado:string;
     
 
     @ManyToOne(() => producto, (producto_id) => producto_id.ipvs, {eager: true,onDelete:'CASCADE'})
     @JoinColumn({name: 'producto_id'})
     producto_id:producto;
     
-    @OneToMany(() => ipvGlobal, inveGlobal => inveGlobal.ipv_id)
-    ipvsG: ipvGlobal[];
+    @ManyToOne(() => ipvGlobal, ipvG_id => ipvG_id.ipvs, {eager: true,onDelete:'CASCADE'})
+    @JoinColumn({name: 'ipvG_id'})
+    ipvG_id:ipvGlobal;
 
 
 }

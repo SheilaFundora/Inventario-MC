@@ -2,9 +2,9 @@ import { Injectable, Body, Delete } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository} from 'typeorm'
 import { ipv } from '../entities/ipv.entity';
-import { promises } from 'dns';
 import { CreateIPVDto } from '../dto/create-ipv.dto';
-
+import { producto } from '../entities/producto.entity';
+import { productoService } from './productos.service';
 
 
 
@@ -14,7 +14,7 @@ export class ipvService {
 
     constructor(
         @InjectRepository(ipv) private ipvRepo:Repository<ipv>,
-
+        @InjectRepository(producto) private productRepo:Repository<producto>,
     )
     {}
 
@@ -29,7 +29,28 @@ export class ipvService {
         return this.ipvRepo.findOneBy({id});
     }
 
-    create(body:CreateIPVDto){
+
+
+    async getEstado(id: number): Promise<ipv>
+    {
+        if ((await this.ipvRepo.findOneBy({ id })).estado === 'false'){
+            return this.ipvRepo.findOneBy({id});
+        }
+
+    }
+
+
+
+   async create(body:CreateIPVDto){
+
+
+
+        const producto = await this.productRepo.findOneBy(body.producto_id)
+        if (producto.cantidad >=body.venta){
+            producto.cantidad=producto.cantidad - body.venta;
+            this.updateP(producto.id,producto);
+        }
+        else throw new Error('No hay suficientes productos en el inventario')
         const newIPV = this.ipvRepo.create(body);
         return this.ipvRepo.save(newIPV);
     }
@@ -52,4 +73,14 @@ export class ipvService {
         return true;
     }
 
+    async updateP (id:number, body:any){
+        const product = await this.productRepo.findOneBy({id});
+        if (!product) {
+            throw new Error('id no encontrado');
+          }
+          this.productRepo.merge(product, body);
+          return this.productRepo.save(product);
+    }
 }
+
+

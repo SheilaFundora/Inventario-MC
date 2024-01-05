@@ -15,4 +15,5 @@ export class CreateIPVDto{
     existenciaFinal:number;
     ipvsG:ipvGlobal[];
     producto_id:producto;
+    estado:string;
 }
