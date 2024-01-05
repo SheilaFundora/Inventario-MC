@@ -65,7 +65,7 @@ const AddDependent = ({openAddDependent, setLoading, loading, handleOpenAddDepen
                             <TextField
                                 label="Nombre Completo"
                                 type='text'
-                                sx={{m: 2, width: '400px'}}
+                                sx={{my: 2, width: '400px'}}
                                 {...register("nombre", {
                                     required: 'Campo requerido'
                                 })}
@@ -75,7 +75,7 @@ const AddDependent = ({openAddDependent, setLoading, loading, handleOpenAddDepen
                             <TextField
                                 label="Número de teléfono"
                                 type='text'
-                                sx={{m: 2, width: '400px'}}
+                                sx={{my: 2, width: '400px'}}
                                 {...register('numeroT', {
                                     pattern: {
                                         value: /^\d+$/,
@@ -85,9 +85,12 @@ const AddDependent = ({openAddDependent, setLoading, loading, handleOpenAddDepen
                                 error={errors.numeroT}
                                 helperText={errors.numeroT && errors.numeroT.message}
                             />
+
                         </div>
 
-                        {errorMessage && <div className='error-message text-danger text-start ms-4'>{errorMessage}</div>}
+                        {errorMessage && <div className='error-message text-center text-danger my-2'>{errorMessage}</div>}
+
+
 
                         <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
                             <Button autoFocus onClick={handleOpenAddDependent} variant="contained" color='error'>

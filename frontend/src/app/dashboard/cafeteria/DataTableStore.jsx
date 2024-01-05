@@ -11,6 +11,8 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
 import {store_endpoint} from "@/constants/apiRoutes";
+import EditDependent from "@/app/dashboard/dependent/EditDependent";
+import EditStore from "@/app/dashboard/cafeteria/EditStore";
 
 const DataTableStore = ({stores, handleRefreshStores, loading, setLoading}) => {
     const [storeData, setStoreData] =  React.useState(stores);
@@ -87,7 +89,7 @@ const DataTableStore = ({stores, handleRefreshStores, loading, setLoading}) => {
     return (
         <div>
             <div className="datatable mt-4">
-                <DataTable value={stores || []}
+                <DataTable value={storeData || []}
                            paginator rows={5}
                            rowsPerPageOptions={[5, 10, 25, 50]}
                            tableStyle={{minWidth: '50rem'}}
@@ -137,6 +139,17 @@ const DataTableStore = ({stores, handleRefreshStores, loading, setLoading}) => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+
+            { openEdit &&
+                <EditStore openEdit={openEdit}
+                           handleOpenEdit={handleOpenEdit}
+                           handleRefreshStores={handleRefreshStores}
+                           setLoading={setLoading}
+                           loading={loading}
+                           storeToEdit={storeToEdit}
+                />
+            }
 
 
         </div>

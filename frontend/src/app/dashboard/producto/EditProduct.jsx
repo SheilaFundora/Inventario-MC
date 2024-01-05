@@ -147,7 +147,7 @@ const EditProduct = ({openEdit, handleOpenEdit, handleRefreshProducts, loading, 
                                     Cancelar
                                 </Button>
                                 <Button variant="contained" type="submit" className={'ms-4'}>
-                                    Agregar
+                                    Aceptar
                                 </Button>
                             </DialogActions>
                         </DialogContent>
