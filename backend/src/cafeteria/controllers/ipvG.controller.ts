@@ -25,7 +25,7 @@ export class ivpGController {
     }
 
     @Post()
-    async create(@Body() body: {CreateIPVGDto:CreateIPVGDto}){
+    async create(@Body() CreateIPVGDto:CreateIPVGDto){
 
                 return await this.ipvGService.create(CreateIPVGDto);
 

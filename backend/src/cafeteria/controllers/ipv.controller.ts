@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, HttpStatus,HttpException } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, HttpStatus,HttpException, Patch } from '@nestjs/common';
 import { CreateIPVDto } from '../dto/create-ipv.dto';
 import { ipvService } from '../services/ipv.service';
 import { ipv } from '../entities/ipv.entity';
@@ -41,9 +41,13 @@ export class ivpController {
     
 
     @Put(':id')
-    update(@Param('id') id:number, @Body() body:any)
+    update(@Param('id') id:number, @Body() body:CreateIPVDto)
     {return this.ipvService.update(id,body)}
 
+
+    @Patch(':id')
+    patch(@Param('id') id:number, @Body() body:CreateIPVDto)
+    {return this.ipvService.patch(id,body)}
 
     @Delete(':id')
     delete(@Param('id') id:number){
