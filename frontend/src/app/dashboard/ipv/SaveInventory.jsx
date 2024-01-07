@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
 
-const SaveInventory = ({handleOpenSave, openSave, products}) => {
+const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [dependents, setDependents] = useState([]);
     const [stores, setStores] = useState([]);
@@ -54,15 +54,15 @@ const SaveInventory = ({handleOpenSave, openSave, products}) => {
         //2- Quedarme con el id del q esta en estado false, y ponerlo en ipv_id
         //3- Crear el ipv general
         //4- Hacer el patch de ese ipv y ponerlo en true y cerrar el modal
-        const total = products.reduce((total, products) => total + products.subtotalEfectivo, 0);
-        data.ipv_id = 1;
+        const total = ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0);
         data.total = total;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
-        console.log(data)
+        console.log('ipvData', ipvData)
+        console.log('data', data)
 
-     /*   try {
-            const resp = await fetchData(ipv_endpoint, data, "POST");
+      /*  try {
+            const resp = await fetchData(ipv_endpoint, ipvData, "POST");
             handleOpenSave();
 
             if (resp.status === 201) {
@@ -75,7 +75,6 @@ const SaveInventory = ({handleOpenSave, openSave, products}) => {
         } catch (error) {
             console.log(error)
         }*/
-
     }
 
     return (
@@ -192,7 +191,7 @@ const SaveInventory = ({handleOpenSave, openSave, products}) => {
                         <div className={'text-center ms-3'}>
                             <Typography variant="subtitle1" style={{fontSize: '1.1rem'}}>
                                 Importe total de venta: {
-                                products.reduce((total, products) => total + products.subtotalEfectivo, 0)
+                                ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0)
                             }
                             </Typography>
                         </div>

@@ -34,6 +34,7 @@ const Page = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [openSave, setOpenSave] = React.useState(false);
     const [refreshIPV, setRefreshIPV] = React.useState(false)
+    const [ipvData, setIpvData] = React.useState(false)
 
     const handleRefreshIPV = () => {
         setRefreshIPV(!refreshIPV)
@@ -55,7 +56,9 @@ const Page = () => {
                 existenciaFinal,
             };
         });
-        setProducts(updatedData)
+
+        let newData = updatedData.map(({ nombre, cantidad, precio, ...rest }) => rest);
+        setIpvData(newData)
         handleOpenSave();
     }
 
@@ -201,7 +204,7 @@ const Page = () => {
             </TableContainer>
             {
                 openSave &&
-                <SaveInventory handleOpenSave={handleOpenSave} openSave={openSave} products={products}/>
+                <SaveInventory handleOpenSave={handleOpenSave} openSave={openSave} ipvData={ipvData}/>
             }
         </div>
     );
