@@ -7,7 +7,7 @@ import { dependiente } from './dependiente.entity';
 export class ipv{
     @PrimaryGeneratedColumn()
     id:number;
-    @Column({nullable:true, unique:true})
+    @Column({nullable:true})
     entrada:number;
     @Column({nullable:true})
     traslado:number;
