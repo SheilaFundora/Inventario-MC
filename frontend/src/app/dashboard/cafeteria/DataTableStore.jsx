@@ -96,7 +96,7 @@ const DataTableStore = ({stores, handleRefreshStores, loading, setLoading}) => {
                            className="p-datatable-hgridlines"
                 >
                     <Column field="nombre" header="Nombre" sortable filter style={{width: '25%'}}></Column>
-                    <Column field="salario" header="Salario" sortable/>
+                    <Column field="salario" header="Salario en %" sortable/>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
                 </DataTable>
             </div>

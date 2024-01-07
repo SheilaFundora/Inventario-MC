@@ -58,11 +58,9 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
         data.total = total;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
-        console.log('ipvData', ipvData)
-        console.log('data', data)
 
-      /*  try {
-            const resp = await fetchData(ipv_endpoint, ipvData, "POST");
+        try {
+            const resp = await fetchData(ipv_endpoint, ipvData[0], "POST");
             handleOpenSave();
 
             if (resp.status === 201) {
@@ -74,7 +72,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
 
         } catch (error) {
             console.log(error)
-        }*/
+        }
     }
 
     return (
@@ -105,7 +103,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
                 <form onSubmit={handleSubmit(handleSubmitIPV)}>
                     <DialogContent>
                         <h4 className='mt-4 text-center'>Estás seguro de guardar este inventario</h4>
-                        <div className={'d-flex align-items-center justify-content-between'}>
+                      {/*  <div className={'d-flex align-items-center justify-content-between'}>
                             <TextField
                                 label="Transferencia"
                                 type='text'
@@ -195,7 +193,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
                             }
                             </Typography>
                         </div>
-
+*/}
 
                         <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
                             <Button autoFocus onClick={handleOpenSave} variant="contained" color='error'>

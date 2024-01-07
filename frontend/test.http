@@ -1,0 +1,11 @@
+POST http://localhost:5000/api/cafeteria/ipv
+Content-Type: application/json
+
+{"producto_id":54,
+  "entrada":0,
+  "traslado":0,
+  "venta":0,
+  "merma":0,
+  "subtotalEfectivo":0,
+  "existenciaFinal":23
+}

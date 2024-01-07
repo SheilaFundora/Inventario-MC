@@ -57,7 +57,10 @@ const Page = () => {
             };
         });
 
-        let newData = updatedData.map(({ nombre, cantidad, precio, ...rest }) => rest);
+        let newData = updatedData.map(({ id, nombre, cantidad, precio, precioC, limite,  ...rest }) => {
+            return { producto_id: id, ...rest };
+        });
+
         setIpvData(newData)
         handleOpenSave();
     }
