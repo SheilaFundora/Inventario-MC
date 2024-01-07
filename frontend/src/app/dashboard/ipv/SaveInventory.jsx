@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
 
-const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
+const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [dependents, setDependents] = useState([]);
     const [stores, setStores] = useState([]);
@@ -50,7 +50,6 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
 
     const handleSubmitIPV =  async (data) => {
         //pasos:
-        //1- Crear el ipv
         //2- Quedarme con el id del q esta en estado false, y ponerlo en ipv_id
         //3- Crear el ipv general
         //4- Hacer el patch de ese ipv y ponerlo en true y cerrar el modal
@@ -58,16 +57,24 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
         data.total = total;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
-
         try {
-            const resp = await fetchData(ipv_endpoint, ipvData[0], "POST");
-            handleOpenSave();
-
+            //creando el ipv
+            const resp = await fetchData(ipv_endpoint, ipvData, "POST");
             if (resp.status === 201) {
                 handleRefreshIPV();
-                await Swal.fire('Exito', "Se ha creado correctamente el ipv", 'success');
-            }else{
-                await Swal.fire('Error', "Error del servidor", 'error');
+            }
+            //quedandome con las id de los ipv con estado false
+            try {
+                //creando el ipv
+                const resp = await fetchData(ipv_endpoint, ipvData, "POST");
+                if (resp.status === 201) {
+                    handleRefreshIPV();
+                }
+                //quedandome con las id de los ipv con estado false
+
+
+            } catch (error) {
+                console.log(error)
             }
 
         } catch (error) {
@@ -103,7 +110,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
                 <form onSubmit={handleSubmit(handleSubmitIPV)}>
                     <DialogContent>
                         <h4 className='mt-4 text-center'>Estás seguro de guardar este inventario</h4>
-                      {/*  <div className={'d-flex align-items-center justify-content-between'}>
+                        <div className={'d-flex align-items-center justify-content-between'}>
                             <TextField
                                 label="Transferencia"
                                 type='text'
@@ -193,7 +200,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData}) => {
                             }
                             </Typography>
                         </div>
-*/}
+
 
                         <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
                             <Button autoFocus onClick={handleOpenSave} variant="contained" color='error'>

@@ -207,7 +207,12 @@ const Page = () => {
             </TableContainer>
             {
                 openSave &&
-                <SaveInventory handleOpenSave={handleOpenSave} openSave={openSave} ipvData={ipvData}/>
+                <SaveInventory
+                    handleOpenSave={handleOpenSave}
+                    openSave={openSave}
+                    ipvData={ipvData}
+                    handleRefreshIPV={handleRefreshIPV}
+                />
             }
         </div>
     );
