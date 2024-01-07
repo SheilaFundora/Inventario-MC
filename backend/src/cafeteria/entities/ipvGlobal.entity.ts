@@ -19,8 +19,6 @@ export class ipvGlobal{
     otrosGastos:string;
     @CreateDateColumn({ type: "timestamp without time zone", default: () => "CURRENT_TIMESTAMP" , nullable: true})
     fechaIPV: string;
-    @Column({nullable:true,type:'float'})
-    porcientoSalario:string;
     
 
 

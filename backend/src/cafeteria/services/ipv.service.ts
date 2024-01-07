@@ -37,7 +37,7 @@ export class ipvService {
 
 
 
-    async create(body: CreateIPVDto) {
+    async create(body: CreateIPVDto[]) {
 
 
 
