@@ -32,7 +32,7 @@ export class ivpController {
 
 
     @Post()
-    async create(@Body() CreateIPVDto:CreateIPVDto){
+    async create(@Body() CreateIPVDto:CreateIPVDto[]){
 
             return await this.ipvService.create(CreateIPVDto);
 
