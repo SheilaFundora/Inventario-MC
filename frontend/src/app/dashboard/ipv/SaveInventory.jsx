@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
 
-const SaveInventory = ({handleOpenSave, openSave, products}) => {
+const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [dependents, setDependents] = useState([]);
     const [stores, setStores] = useState([]);
@@ -50,32 +50,36 @@ const SaveInventory = ({handleOpenSave, openSave, products}) => {
 
     const handleSubmitIPV =  async (data) => {
         //pasos:
-        //1- Crear el ipv
         //2- Quedarme con el id del q esta en estado false, y ponerlo en ipv_id
         //3- Crear el ipv general
         //4- Hacer el patch de ese ipv y ponerlo en true y cerrar el modal
-        const total = products.reduce((total, products) => total + products.subtotalEfectivo, 0);
-        data.ipv_id = 1;
+        const total = ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0);
         data.total = total;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
 
-        console.log(data)
-
-     /*   try {
-            const resp = await fetchData(ipv_endpoint, data, "POST");
-            handleOpenSave();
-
+        try {
+            //creando el ipv
+            const resp = await fetchData(ipv_endpoint, ipvData, "POST");
             if (resp.status === 201) {
                 handleRefreshIPV();
-                await Swal.fire('Exito', "Se ha creado correctamente el ipv", 'success');
-            }else{
-                await Swal.fire('Error', "Error del servidor", 'error');
+            }
+            //quedandome con las id de los ipv con estado false
+            try {
+                //creando el ipv
+                const resp = await fetchData(ipv_endpoint, ipvData, "POST");
+                if (resp.status === 201) {
+                    handleRefreshIPV();
+                }
+                //quedandome con las id de los ipv con estado false
+
+
+            } catch (error) {
+                console.log(error)
             }
 
         } catch (error) {
             console.log(error)
-        }*/
-
+        }
     }
 
     return (
@@ -192,7 +196,7 @@ const SaveInventory = ({handleOpenSave, openSave, products}) => {
                         <div className={'text-center ms-3'}>
                             <Typography variant="subtitle1" style={{fontSize: '1.1rem'}}>
                                 Importe total de venta: {
-                                products.reduce((total, products) => total + products.subtotalEfectivo, 0)
+                                ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0)
                             }
                             </Typography>
                         </div>

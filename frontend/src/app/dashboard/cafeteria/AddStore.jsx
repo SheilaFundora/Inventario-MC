@@ -74,7 +74,7 @@ const AddStore = ({openAddStore, setLoading, loading, handleOpenAddStore, handle
                                 helperText={errors.nombre && errors.nombre.message}
                             />
                             <TextField
-                                label="Salario"
+                                label="Salario en %"
                                 type='text'
                                 sx={{m: 2, width: '400px'}}
                                 {...register('salario', {
