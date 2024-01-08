@@ -72,7 +72,7 @@ const EditStore = ({openEdit, handleOpenEdit, storeToEdit, handleRefreshStores, 
                                 defaultValue={storeToEdit.nombre}
                             />
                             <TextField
-                                label="Salario"
+                                label="Salario en %"
                                 type='text'
                                 sx={{m: 2, width: '400px'}}
                                 {...register('salario', {
