@@ -16,6 +16,7 @@ import { dependienteService } from './services/dependiente.service';
 import { cafeteriaService } from './services/cafeteria.service';
 import { cafeteriaController } from './controllers/cafeteria.controller';
 import { dependienteController } from './controllers/dependiente.controller';
+import { estadoController } from './controllers/estado.controller';
 
 
 @Module({
@@ -23,7 +24,7 @@ import { dependienteController } from './controllers/dependiente.controller';
       TypeOrmModule.forFeature([producto,ipv,ipvGlobal,cafeteria,dependiente])
     ],
     providers: [productoService,ipvService, ipvGService,dependienteService,cafeteriaService],
-    controllers: [productoController,ivpController, ivpGController,cafeteriaController, dependienteController]
+    controllers: [productoController,ivpController, ivpGController,cafeteriaController, dependienteController,estadoController]
   
   })
   export class productos {

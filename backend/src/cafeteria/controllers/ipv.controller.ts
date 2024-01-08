@@ -23,11 +23,6 @@ export class ivpController {
         return this.ipvService.getId(id);
     }
 
-    @Get(':id')
-    getStatus(@Param('id') id : number): Promise<ipv>{
-        return this.ipvService.getEstado(id);
-    }
-
 
 
 

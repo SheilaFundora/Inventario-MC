@@ -5,6 +5,7 @@ import { ipv } from '../entities/ipv.entity';
 import { CreateIPVDto } from '../dto/create-ipv.dto';
 import { producto } from '../entities/producto.entity';
 import { productoService } from './productos.service';
+import { take } from 'rxjs';
 
 
 
@@ -28,12 +29,19 @@ export class ipvService {
 
 
 
-    async getEstado(id: number): Promise<ipv> {
-        if ((await this.ipvRepo.findOneBy({ id })).estado === 'false') {
-            return this.ipvRepo.findOneBy({ id });
+    async getEstado(): Promise<number[]> {
+        
+        const arr = await this.ipvRepo.find({ relations: ['ipvsG'], where: {estado:'false'} });
+        const ids:number[] = [];
+
+        for (const recorrido of arr){
+            ids.push(recorrido.id)
         }
 
-    }
+        return ids
+        }
+
+    
 
 
 
