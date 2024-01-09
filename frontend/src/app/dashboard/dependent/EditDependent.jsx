@@ -19,7 +19,6 @@ const EditDependent = ({openEdit, handleOpenEdit, handleRefreshDependents, setLo
     }, []);
 
     const getDataForm = async () => {
-        console.log(dependenToEdit.cafeteria_id)
         setValue('cafeteria_id', dependenToEdit.cafeteria_id.id );
 
         try{
@@ -40,7 +39,6 @@ const EditDependent = ({openEdit, handleOpenEdit, handleRefreshDependents, setLo
     const handleEditDependent= async (data) => {
         const endpoint = dependent_endpoint + '/' + dependenToEdit.id +'/'
 
-        console.log(data)
         try {
             const resp = await fetchData(endpoint, data, "PUT");
 
