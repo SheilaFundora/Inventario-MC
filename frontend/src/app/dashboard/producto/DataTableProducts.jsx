@@ -94,13 +94,14 @@ const DataTableProducts = ({products, loading, setLoading, handleRefreshProducts
                            tableStyle={{minWidth: '50rem'}}
                            className="p-datatable-hgridlines"
                 >
-                    <Column field="nombre" header="Nombre" sortable filter style={{width: '25%'}}></Column>
-                    <Column field="cantidad" header="Cantidad" sortable style={{ width: '20%' }} body={(products) => (
+                    <Column field="nombre" header="Nombre" sortable filter></Column>
+                    <Column field="cantidad" header="Cantidad" sortable body={(products) => (
                         <div className={products.cantidad < products.limite ? 'text-danger font-weight-bold' : ''}>{products.cantidad}</div>
                     )}></Column>
                     <Column field="precioC" header="Precio de compra" sortable/>
                     <Column field="precio" header="Precio de venta" sortable/>
                     <Column field="limite" header="Límite" sortable/>
+                    <Column field="cafeteria_id.nombre" header="Cafeteria" sortable/>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
                 </DataTable>
             </div>

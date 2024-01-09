@@ -56,7 +56,7 @@ const EditStore = ({openEdit, handleOpenEdit, storeToEdit, handleRefreshStores, 
 
                 <form onSubmit={handleSubmit(handleEditStore)}>
                     <DialogContent>
-                        <h4 className='mt-4 text-center'>Formulario para agregar Cafeterias</h4>
+                        <h4 className='mt-4 text-center'>Formulario para editar Cafeterias</h4>
 
 
                         <div className={'d-flex w-100 align-items-center justify-content-between'}>
