@@ -95,48 +95,52 @@ const DataTableDependent = ({dependents, handleRefreshDependents, setLoading, lo
                 >
                     <Column field="nombre" header="Nombre" sortable filter style={{width: '25%'}}></Column>
                     <Column field="numeroT" header="Teléfono" sortable/>
+                    <Column field="cafeteria_id.nombre" header="Cafeteria" sortable/>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
                 </DataTable>
             </div>
 
-            <Dialog
-                onClose={handleOpenDelete}
-                aria-labelledby="customized-dialog-title"
-                open={openDelete}
-                className={'p-5'}
-            >
-
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                </DialogTitle>
-
-                <IconButton
-                    aria-label="close"
-                    onClick={handleOpenDelete}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
+            { openDelete &&
+                <Dialog
+                    onClose={handleOpenDelete}
+                    aria-labelledby="customized-dialog-title"
+                    open={openDelete}
+                    className={'p-5'}
                 >
-                    <CloseIcon />
-                </IconButton>
 
-                <DialogContent className='text-center'>
-                    <ErrorOutlineIcon sx={{ fontSize: 60 }} color="action"  />
-                    <h4 className='mt-4'>Estás seguro de eliminar este dependiente</h4>
-                    <p>Está acción no se puede deshacer.</p>
-                </DialogContent>
+                    <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                    </DialogTitle>
 
-                <DialogActions sx={{ pb: 3, justifyContent: 'center'}} >
-                    <Button autoFocus onClick={handleOpenDelete} variant="contained" color='error'>
-                        Cancelar
-                    </Button> <br/>
-                    <Button variant="contained" onClick={handleDeleteDependet}>
-                        Aceptar
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleOpenDelete}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: (theme) => theme.palette.grey[500],
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
+                    <DialogContent className='text-center'>
+                        <ErrorOutlineIcon sx={{ fontSize: 60 }} color="action"  />
+                        <h4 className='mt-4'>Estás seguro de eliminar este dependiente</h4>
+                        <p>Está acción no se puede deshacer.</p>
+                    </DialogContent>
+
+                    <DialogActions sx={{ pb: 3, justifyContent: 'center'}} >
+                        <Button autoFocus onClick={handleOpenDelete} variant="contained" color='error'>
+                            Cancelar
+                        </Button> <br/>
+                        <Button variant="contained" onClick={handleDeleteDependet}>
+                            Aceptar
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            }
+
 
             { openEdit &&
                 <EditDependent openEdit={openEdit}

@@ -1,23 +1,49 @@
-import React, {useState} from 'react';
-import {Dialog, DialogActions, DialogContent, TextField} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Dialog, DialogActions, DialogContent, MenuItem, TextField} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
 import Button from "@mui/material/Button";
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {fetchData} from "@/helper/fetch";
-import {dependent_endpoint} from "@/constants/apiRoutes";
+import {dependent_endpoint, store_endpoint} from "@/constants/apiRoutes";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const EditDependent = ({openEdit, handleOpenEdit, handleRefreshDependents, setLoading, loading, dependenToEdit}) => {
-    const { register, reset, handleSubmit, formState: { errors } } = useForm();
+    const { register, setValue, control, handleSubmit, formState: { errors } } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
+    const [stores, setStores] = useState([]);
+
+    useEffect(() => {
+        getDataForm();
+    }, []);
+
+    const getDataForm = async () => {
+        setValue('cafeteria_id', dependenToEdit.cafeteria_id.id );
+
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + store_endpoint
+            )
+                .then(response => {
+                    setStores(response.data);
+                })
+
+        }catch (error) {
+            console.log(error)
+            await Swal.fire('Error', "Error del servidor", 'error');
+
+        }
+    }
 
     const handleEditDependent= async (data) => {
         const endpoint = dependent_endpoint + '/' + dependenToEdit.id +'/'
 
+        console.log(endpoint)
 
         try {
             const resp = await fetchData(endpoint, data, "PUT");
+            console.log(resp)
 
             if (resp.status === 200) {
                 handleRefreshDependents();
@@ -58,23 +84,23 @@ const EditDependent = ({openEdit, handleOpenEdit, handleRefreshDependents, setLo
                     <DialogContent>
                         <h4 className='mt-4 text-center'>Formulario para editar Dependientes</h4>
 
-                        <div className={'text-center'}>
-                            <TextField
-                                label="Nombre"
-                                type='text'
-                                sx={{m: 2, width: '400px'}}
-                                {...register("nombre", {
-                                    required: 'Campo requerido'
-                                })}
-                                error={errors.nombre}
-                                helperText={errors.nombre && errors.nombre.message}
-                                defaultValue={dependenToEdit.nombre}
+                        <TextField
+                            label="Nombre"
+                            type='text'
+                            sx={{m: 2, width: '460px'}}
+                            {...register("nombre", {
+                                required: 'Campo requerido'
+                            })}
+                            error={errors.nombre}
+                            helperText={errors.nombre && errors.nombre.message}
+                            defaultValue={dependenToEdit.nombre}
+                        />
 
-                            />
+                        <div className={'d-flex w-100 align-items-center justify-content-between'}>
                             <TextField
                                 label="Número de teléfono"
                                 type='text'
-                                sx={{m: 2, width: '400px'}}
+                                sx={{m: 2, width: '200px'}}
                                 {...register('numeroT', {
                                     pattern: {
                                         value: /^\d+$/,
@@ -85,6 +111,27 @@ const EditDependent = ({openEdit, handleOpenEdit, handleRefreshDependents, setLo
                                 helperText={errors.numeroT && errors.numeroT.message}
                                 defaultValue={dependenToEdit.numeroT}
                             />
+                            <Controller
+                                name={'cafeteria_id'}
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) => (
+                                    <TextField
+                                        select
+                                        required={true}
+                                        label={'Cafeterias'}
+                                        {...field}
+                                        sx={{ m: 2, width: '250px' }}
+                                    >
+                                        {stores.map((option) => (
+                                            <MenuItem key={option.id} value={option.id}>
+                                                {option.nombre}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                )}
+                            />
+
                         </div>
 
                         {errorMessage && <div className='error-message text-danger text-start ms-4'>{errorMessage}</div>}

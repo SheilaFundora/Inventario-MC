@@ -35,7 +35,6 @@ const Page = () => {
                 process.env.NEXT_PUBLIC_API_HOST + dependent_endpoint
             )
                 .then(response => {
-                    console.log(response)
                     setDependents(response.data);
                 })
 

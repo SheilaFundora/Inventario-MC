@@ -34,6 +34,7 @@ export default function BasicCard() {
                 process.env.NEXT_PUBLIC_API_HOST + product_endpoint
             )
                 .then(response => {
+                    console.log(response.data)
                     setProducts(response.data);
                 })
 
