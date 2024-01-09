@@ -40,7 +40,7 @@ export class cafeteriaService {
       }
     
 
-    async update (id:number, body:any){
+    async update (id:number, body:CreateCafeteriaDto){
         const cafeteria = await this.cafeteriaRep.findOneBy({id});
         if (!cafeteria) {
             throw new Error('id no encontrado');
