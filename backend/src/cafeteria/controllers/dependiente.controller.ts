@@ -34,7 +34,7 @@ export class dependienteController {
     
 
     @Put(':id')
-    update(@Param('id') id:number, @Body() body:any)
+    update(@Param('id') id:number, @Body() body:CreateDependienteDto)
     {return this.dependienteService.update(id,body)}
 
 

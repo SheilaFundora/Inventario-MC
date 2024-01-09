@@ -56,7 +56,7 @@ export class dependienteService {
       }
     
 
-    async update (id:number, body:any){
+    async update (id:number, body:CreateDependienteDto){
         const dependiente = await this.dependienteRep.findOneBy({id});
         if (!dependiente) {
             throw new Error('id no encontrado');
