@@ -23,12 +23,10 @@ export class ipvGlobal{
 
 
 
-    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.ipvsG, {eager: true,onDelete:'CASCADE'})
-    @JoinColumn({name: 'cafeteria_id'})
-    cafeteria_id:cafeteria;
 
 
-    @ManyToOne(() => ipv, ipv_id => ipv_id.ipvsG, {eager: true,onDelete:'CASCADE'})
+
+    @ManyToOne(() => ipv, ipv_id => ipv_id.ipvsG, {eager: true,onDelete:'CASCADE',nullable:false})
     @JoinColumn({name: 'ipv_id'})
     ipv_id:ipv;
 

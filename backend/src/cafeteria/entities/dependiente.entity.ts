@@ -13,7 +13,7 @@ export class dependiente{
     @Column({nullable:false})
     numeroT:number;
     
-    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.deps, {eager: true,onDelete:'CASCADE'})
+    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.deps, {eager: true,onDelete:'CASCADE',nullable:false})
     @JoinColumn({name: 'cafeteria_id'})
     cafeteria_id:cafeteria;
 

@@ -18,7 +18,7 @@ export class producto{
     limite:number;
     @OneToMany(() => ipv, (inventario) => inventario.producto_id)
     ipvs: ipv[];
-    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.prods, {eager: true,onDelete:'CASCADE'})
+    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.prods, {eager: true,onDelete:'CASCADE',nullable:false})
     @JoinColumn({name: 'cafeteria_id'})
     cafeteria_id:cafeteria;
 }
