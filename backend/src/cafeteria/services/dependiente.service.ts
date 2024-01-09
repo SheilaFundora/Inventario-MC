@@ -22,6 +22,20 @@ export class dependienteService {
     return  this.dependienteRep.find();
     }
 
+
+    async findByCaf(id:number)
+    {
+        const arr = await this.dependienteRep.find();
+        const arreglodeps: dependiente[] = [];
+        for (const i of arr){
+            if (i.cafeteria_id.id===id){
+                arreglodeps.push(i);
+            }
+        }
+        return arreglodeps;
+    }
+
+
     getId(id: number)
     {
         return this.dependienteRep.findOneBy({id});

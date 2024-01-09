@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {Repository} from 'typeorm'
 import { producto } from '../entities/producto.entity';
 import { CreateProductoDto } from '../dto/create-p.dto';
+import { cafeteria } from '../entities/cafeteria.entity';
 
 
 @Injectable()
@@ -57,4 +58,16 @@ export class productoService {
         return true;
     }
 
+
+    async findProdCaf(id:number)
+    {
+    const arr = await this.productoRep.find();
+    const arregloProducto: producto[] = [];
+    for (const i of arr){
+        if (i.cafeteria_id.id===id){
+            arregloProducto.push(i);
+        }
+    }
+    return arregloProducto;
+    }
 }

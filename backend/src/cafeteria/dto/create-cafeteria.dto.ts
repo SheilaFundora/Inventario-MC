@@ -1,6 +1,7 @@
 import { IsNumber, IsString } from "class-validator";
 import { dependiente } from '../entities/dependiente.entity';
 import { ipvGlobal } from "../entities/ipvGlobal.entity";
+import { producto } from "../entities/producto.entity";
 
 
 export class CreateCafeteriaDto{
@@ -10,7 +11,7 @@ export class CreateCafeteriaDto{
     nombre: string;
     salario: string;
     ipvsG: ipvGlobal[];
-
-
+    deps: dependiente[];
+    prods: producto[];
 
 }

@@ -1,5 +1,6 @@
 import { IsNumber, IsString } from "class-validator";
 import { ipv } from "../entities/ipv.entity";
+import { cafeteria } from "../entities/cafeteria.entity";
 
 export class CreateProductoDto{
 
@@ -11,7 +12,7 @@ export class CreateProductoDto{
     ipvs:ipv[];
     limite:number;
     precioC:string;
-
+    cafeteria_id:cafeteria;
 
 
 }

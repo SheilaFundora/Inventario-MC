@@ -1,5 +1,6 @@
-import {Entity, Column, PrimaryGeneratedColumn, Unique, OneToMany} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, Unique, OneToMany, ManyToOne, JoinColumn} from 'typeorm';
 import { ipv } from './ipv.entity';
+import { cafeteria } from './cafeteria.entity';
 
 @Entity()
 export class producto{
@@ -17,4 +18,7 @@ export class producto{
     limite:number;
     @OneToMany(() => ipv, (inventario) => inventario.producto_id)
     ipvs: ipv[];
+    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.prods, {eager: true,onDelete:'CASCADE'})
+    @JoinColumn({name: 'cafeteria_id'})
+    cafeteria_id:cafeteria;
 }

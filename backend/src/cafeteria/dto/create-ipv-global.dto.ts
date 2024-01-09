@@ -17,5 +17,4 @@ export class CreateIPVGDto{
     fechaIPV:string;
     ipv_id:ipv;
     cafeteria_id:cafeteria;
-    dependiente_id:dependiente;
 }

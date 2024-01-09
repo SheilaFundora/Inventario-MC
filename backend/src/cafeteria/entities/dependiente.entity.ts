@@ -13,8 +13,9 @@ export class dependiente{
     @Column({nullable:false})
     numeroT:number;
     
-    @OneToMany(() => ipvGlobal, (ipvG) => ipvG.dependiente_id)
-    ipvsG: ipvGlobal[];
+    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.deps, {eager: true,onDelete:'CASCADE'})
+    @JoinColumn({name: 'cafeteria_id'})
+    cafeteria_id:cafeteria;
 
 
 }
