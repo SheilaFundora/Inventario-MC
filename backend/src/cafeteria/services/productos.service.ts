@@ -43,11 +43,12 @@ export class productoService {
       }
     
 
-    async update (id:number, body:any){
+    async update (id:number, body:CreateProductoDto){
         const product = await this.productoRep.findOneBy({id});
         if (!product) {
             throw new Error('id no encontrado');
           }
+          product.cafeteria_id=body.cafeteria_id;
           this.productoRep.merge(product, body);
           return this.productoRep.save(product);
     }

@@ -61,6 +61,7 @@ export class dependienteService {
         if (!dependiente) {
             throw new Error('id no encontrado');
           }
+          dependiente.cafeteria_id=body.cafeteria_id;
           this.dependienteRep.merge(dependiente, body);
           return this.dependienteRep.save(dependiente);
     }
