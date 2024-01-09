@@ -2,6 +2,7 @@ import {Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, JoinColumn, C
 import { producto } from './producto.entity';
 import { ipvGlobal } from './ipvGlobal.entity';
 import { dependiente } from './dependiente.entity';
+import { cafeteria } from './cafeteria.entity';
 
 @Entity()
 export class ipv{
@@ -23,11 +24,13 @@ export class ipv{
     estado:string;
     
 
-    @ManyToOne(() => producto, (producto_id) => producto_id.ipvs, {eager: true,onDelete:'CASCADE'})
+    @ManyToOne(() => producto, (producto_id) => producto_id.ipvs, {eager: true,onDelete:'CASCADE',nullable:false})
     @JoinColumn({name: 'producto_id'})
     producto_id:producto;
     
-
+    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.ipvs, {eager: true,onDelete:'CASCADE',nullable:false})
+    @JoinColumn({name: 'cafeteria_id'})
+    cafeteria_id:cafeteria;
 
 
     @OneToMany(() => ipvGlobal, inveG => inveG.ipv_id)
