@@ -1,26 +1,48 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Alert,
     Dialog,
     DialogActions,
-    DialogContent,
+    DialogContent, MenuItem,
     Snackbar,
     TextField
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import {useForm} from "react-hook-form";
-import { product_endpoint} from "@/constants/apiRoutes";
+import {Controller, useForm} from "react-hook-form";
+import {dependent_endpoint, product_endpoint, store_endpoint} from "@/constants/apiRoutes";
 import {fetchData} from "@/helper/fetch";
 import Swal from "sweetalert2";
 import IconButton from "@mui/material/IconButton";
 import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
 import MuiAlert from '@mui/material/Alert';
+import axios from "axios";
 
 
 const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts, loading, setLoading}) => {
-    const { register, reset, handleSubmit, formState: { errors } } = useForm();
+    const { register, control, reset, handleSubmit, formState: { errors } } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
     const [open, setOpen] = React.useState(false);
+    const [stores, setStores] = useState([]);
+
+    useEffect(() => {
+        getDataForm();
+    }, []);
+
+    const getDataForm = async () => {
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + store_endpoint
+            )
+                .then(response => {
+                    setStores(response.data);
+                })
+
+        }catch (error) {
+            console.log(error)
+            await Swal.fire('Error', "Error del servidor", 'error');
+
+        }
+    }
 
     const handleClick = () => {
         setOpen(true);
@@ -96,7 +118,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                 <TextField
                                     label="Nombre"
                                     type='text'
-                                    sx={{m: 2, width: '650px'}}
+                                    sx={{m: 2, width: '300px'}}
                                     {...register("nombre", {
                                         required: 'Campo requerido'
                                     })}
@@ -117,6 +139,27 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     error={errors.limite}
                                     helperText={errors.limite && errors.limite.message}
                                 />
+                                <Controller
+                                    name={'cafeteria_id'}
+                                    control={control}
+                                    defaultValue=""
+                                    render={({ field }) => (
+                                        <TextField
+                                            select
+                                            required={true}
+                                            label={'Cafeterias'}
+                                            {...field}
+                                            sx={{ m: 2, width: '250px' }}
+                                        >
+                                            {stores.map((option) => (
+                                                <MenuItem key={option.id} value={option.id}>
+                                                    {option.nombre}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    )}
+                                />
+
                             </div>
 
                             <div className={'d-flex align-items-center justify-content-between'}>

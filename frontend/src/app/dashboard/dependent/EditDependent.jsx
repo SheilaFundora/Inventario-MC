@@ -39,8 +39,11 @@ const EditDependent = ({openEdit, handleOpenEdit, handleRefreshDependents, setLo
     const handleEditDependent= async (data) => {
         const endpoint = dependent_endpoint + '/' + dependenToEdit.id +'/'
 
+        console.log(endpoint)
+
         try {
             const resp = await fetchData(endpoint, data, "PUT");
+            console.log(resp)
 
             if (resp.status === 200) {
                 handleRefreshDependents();
