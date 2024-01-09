@@ -9,7 +9,6 @@ export class CreateDependienteDto{
 
 
 
-
     id:number;
     nombre: string;
     numeroT: number;
