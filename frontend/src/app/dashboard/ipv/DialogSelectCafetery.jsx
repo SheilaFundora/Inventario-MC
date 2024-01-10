@@ -36,12 +36,12 @@ const DialogSelectCafetery = ({openModal, handleSetOpenModal}) => {
     }
 
     const handleSubmitStoreToIpv = (data) => {
-        router.push('/dashboard/ipv' );
+        router.push(`/dashboard/ipv/${data['cafeteria_id']}` );
         handleSetOpenModal();
     }
 
     return (
-        <div>
+        <div className={'p-5'}>
             <Dialog
                 onClose={handleSetOpenModal}
                 aria-labelledby="customized-dialog-title"
@@ -67,7 +67,7 @@ const DialogSelectCafetery = ({openModal, handleSetOpenModal}) => {
 
                 <form onSubmit={handleSubmit(handleSubmitStoreToIpv)}>
                     <DialogContent>
-                        <h4 className='mt-4 text-center'>Seleccione la cafeteria deseada</h4>
+                        <h4 className='mt-1 text-center'>Seleccione la cafeteria deseada</h4>
 
                         <div className={'text-center'}>
                             <Controller
@@ -98,7 +98,7 @@ const DialogSelectCafetery = ({openModal, handleSetOpenModal}) => {
                                 Cancelar
                             </Button>
                             <Button variant="contained" type="submit" className={'ms-4'}>
-                                Agregar
+                                Aceptar
                             </Button>
                         </DialogActions>
                     </DialogContent>
