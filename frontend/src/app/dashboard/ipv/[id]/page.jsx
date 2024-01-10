@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {ipv_endpoint, product_endpoint} from "@/constants/apiRoutes";
+import {ipv_endpoint, product_endpoint, product_store_endpoint} from "@/constants/apiRoutes";
 import {
     Dialog,
     DialogActions,
@@ -29,7 +29,7 @@ import Swal from "sweetalert2";
 import SaveInventory from "@/app/dashboard/ipv/SaveInventory";
 
 
-const Page = () => {
+const Page = ({params}) => {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [openSave, setOpenSave] = React.useState(false);
@@ -78,11 +78,15 @@ const Page = () => {
     }, [refreshIPV]);
 
     const getProducts = async () => {
+        const endpoint = product_store_endpoint + '/' + params.id + '/';
+
         try{
             await axios.get(
-                process.env.NEXT_PUBLIC_API_HOST + product_endpoint
+                process.env.NEXT_PUBLIC_API_HOST + endpoint
             )
                 .then(response => {
+                    console.log(process.env.NEXT_PUBLIC_API_HOST + endpoint)
+                    console.log(response.data)
                     const newData = response.data.map((objeto) => ({
                         ...objeto,
                         entrada: 0,
@@ -106,7 +110,6 @@ const Page = () => {
         );
         setProducts(updatedData);
     };
-
 
     return (
         <div className={'mt-4'}>

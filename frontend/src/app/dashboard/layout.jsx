@@ -25,6 +25,7 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import StoreIcon from '@mui/icons-material/Store';
 import PeopleIcon from '@mui/icons-material/People';
+import DialogSelectCafetery from "@/app/dashboard/ipv/DialogSelectCafetery";
 
 const drawerWidth = 200;
 
@@ -94,11 +95,15 @@ export default function PersistentDrawerLeft({children}) {
     const theme = useTheme();
     const pathname = usePathname();
     const [open, setOpen] = React.useState(true);
+    const [openModal, setOpenModal] = React.useState(false);
+
+    const handleSetOpenModal = () => {
+        setOpenModal(!openModal)
+    }
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
 
     return (
         <div>
@@ -200,18 +205,16 @@ export default function PersistentDrawerLeft({children}) {
                                 </ListItemButton>
                             </Link>
                         </ListItem>
+
                         <ListItem disablePadding>
-                            <Link href={'/dashboard/ipv/'}
-                                  className={`link-sidebar ${pathname === '/dashboard/ipv' ? 'active' : ''}`}
-                            >
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <CalculateIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>IPV</ListItemText>
-                                </ListItemButton>
-                            </Link>
+                            <ListItemButton onClick={handleSetOpenModal}>
+                                <ListItemIcon>
+                                    <CalculateIcon />
+                                </ListItemIcon>
+                                <ListItemText className={`link-sidebar ${pathname === '/dashboard/ipv' ? 'active' : ''}`}>IPV</ListItemText>
+                            </ListItemButton>
                         </ListItem>
+
                         <ListItem disablePadding>
                             <Link href={'/dashboard/resumen/'}
                                   className={`link-sidebar ${pathname === '/dashboard/resumen' ? 'active' : ''}`}
@@ -241,6 +244,15 @@ export default function PersistentDrawerLeft({children}) {
                 </Main>
 
             </Box>
+
+
+            {
+                openModal &&
+                    <DialogSelectCafetery
+                        handleSetOpenModal={handleSetOpenModal}
+                        openModal={openModal}
+                    />
+            }
 
 
             </div>

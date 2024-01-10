@@ -50,7 +50,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
 
     const handleSubmitIPV =  async (data) => {
         //pasos:
-        //2- Quedarme con el id del q esta en estado false, y ponerlo en ipv_id
+        //2- Quedarme con el [id] del q esta en estado false, y ponerlo en ipv_id
         //3- Crear el ipv general
         //4- Hacer el patch de ese ipv y ponerlo en true y cerrar el modal
         const total = ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0);
@@ -63,14 +63,14 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
             if (resp.status === 201) {
                 handleRefreshIPV();
             }
-            //quedandome con las id de los ipv con estado false
+            //quedandome con las [id] de los ipv con estado false
             try {
                 //creando el ipv
                 const resp = await fetchData(ipv_endpoint, ipvData, "POST");
                 if (resp.status === 201) {
                     handleRefreshIPV();
                 }
-                //quedandome con las id de los ipv con estado false
+                //quedandome con las [id] de los ipv con estado false
 
 
             } catch (error) {
@@ -109,8 +109,8 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
 
                 <form onSubmit={handleSubmit(handleSubmitIPV)}>
                     <DialogContent>
-                        <h4 className='mt-4 text-center'>Estás seguro de guardar este inventario</h4>
-                        <div className={'d-flex align-items-center justify-content-between'}>
+                        <h4 className='mt-1 text-center'>Estás seguro de guardar este inventario</h4>
+                        <div className={'d-flex align-items-center justify-content-between mt-3'}>
                             <TextField
                                 label="Transferencia"
                                 type='text'
@@ -150,50 +150,8 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
                                 helperText={errors.fechaIPV && errors.fechaIPV.message}
                             />
                         </div>
-                        <div className={'d-flex align-items-center justify-content-between'}>
-                            <Controller
-                                name={'dependiente_id'}
-                                control={control}
-                                defaultValue=""
-                                render={({ field }) => (
-                                    <TextField
-                                        select
-                                        required={true}
-                                        label={'Dependientes'}
-                                        {...field}
-                                        sx={{ m: 2, width: '300px' }}
-                                    >
-                                        {dependents.map((option) => (
-                                            <MenuItem key={option.id} value={option.id}>
-                                                {option.nombre}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                )}
-                            />
-                            <Controller
-                                name={'cafeteria_id'}
-                                control={control}
-                                defaultValue=""
-                                render={({ field }) => (
-                                    <TextField
-                                        select
-                                        required={true}
-                                        label={'Cafeterias'}
-                                        {...field}
-                                        sx={{ m: 2, width: '300px' }}
-                                    >
-                                        {stores.map((option) => (
-                                            <MenuItem key={option.id} value={option.id}>
-                                                {option.nombre}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                )}
-                            />
-                        </div>
 
-                        <div className={'text-center ms-3'}>
+                        <div className={'text-center ms-3 my-2'}>
                             <Typography variant="subtitle1" style={{fontSize: '1.1rem'}}>
                                 Importe total de venta: {
                                 ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0)

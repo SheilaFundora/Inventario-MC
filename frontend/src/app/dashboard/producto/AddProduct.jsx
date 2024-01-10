@@ -149,7 +149,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                             required={true}
                                             label={'Cafeterias'}
                                             {...field}
-                                            sx={{ m: 2, width: '250px' }}
+                                            sx={{ m: 2, width: '300px' }}
                                         >
                                             {stores.map((option) => (
                                                 <MenuItem key={option.id} value={option.id}>
