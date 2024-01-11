@@ -28,7 +28,7 @@ export class dependienteService {
         const arr = await this.dependienteRep.find();
         let arreglodeps: dependiente[] = [];
         for (var i of arr){
-            if (i.cafeteria_id.id===id){
+            if (i.cafeteria_id.id==id){
                 arreglodeps.push(i);
             }
         }

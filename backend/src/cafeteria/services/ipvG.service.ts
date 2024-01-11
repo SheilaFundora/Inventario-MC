@@ -23,7 +23,7 @@ export class ipvGService {
 
     async findAll(): Promise<ipvGlobal[]>
     {
-    return  this.ipvGRepo.find({relations:['ipv_id']});
+    return  this.ipvGRepo.find();
     }
 
     async getId(id: number): Promise<ipvGlobal>
