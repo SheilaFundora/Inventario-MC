@@ -56,7 +56,10 @@ export class ipvGService {
 
 
 
+    async getIPV(id:number){
 
+      return (await this.ipvGRepo.findOneBy({id})).ipvs;
+    }
 
 
 

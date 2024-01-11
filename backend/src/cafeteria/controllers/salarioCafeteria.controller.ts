@@ -8,7 +8,7 @@ import { cafeteria } from '../entities/cafeteria.entity';
 import { cafeteriaService } from '../services/cafeteria.service';
 import { CreateCafeteriaDto } from '../dto/create-cafeteria.dto';
 @Controller('api/cafeteria/salario')
-export class cafeteriaController {
+export class salarioController {
 
     constructor(
         private cafeteriaService:cafeteriaService

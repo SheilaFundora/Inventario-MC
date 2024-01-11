@@ -18,6 +18,9 @@ import { cafeteriaController } from './controllers/cafeteria.controller';
 import { dependienteController } from './controllers/dependiente.controller';
 import { estadoController } from './controllers/estado.controller';
 import { productoCafateriaController } from './controllers/prodCafeteria.controller';
+import { dependienteCafeteriaController } from './controllers/depCafeteria.controller';
+import { salarioController } from './controllers/salarioCafeteria.controller';
+import { ivparrController } from './controllers/ipvgipv.controller';
 
 
 @Module({
@@ -25,7 +28,7 @@ import { productoCafateriaController } from './controllers/prodCafeteria.control
       TypeOrmModule.forFeature([producto,ipv,ipvGlobal,cafeteria,dependiente])
     ],
     providers: [productoService,ipvService, ipvGService,dependienteService,cafeteriaService],
-    controllers: [productoController,ivpController, ivpGController,cafeteriaController, dependienteController,estadoController,productoCafateriaController]
+    controllers: [productoController,ivpController, ivpGController,cafeteriaController, dependienteController,estadoController,productoCafateriaController,dependienteCafeteriaController,salarioController,ivparrController]
   
   })
   export class productos {
