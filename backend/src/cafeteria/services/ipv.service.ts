@@ -32,7 +32,7 @@ export class ipvService {
     async getEstado(): Promise<number[]> {
         
         const arr = await this.ipvRepo.find({ relations: ['ipvsG'], where: {estado:'false'} });
-        const ids:number[] = [];
+        let ids:number[] = [];
 
         for (const recorrido of arr){
             ids.push(recorrido.id)
@@ -65,7 +65,7 @@ export class ipvService {
             throw new Error('id no encontrado');
         }
 
-
+        inv.ipvG_id=body.ipvG_id;
         inv.producto_id = body.producto_id;
         this.ipvRepo.merge(inv, body);
         return this.ipvRepo.save(inv);

@@ -17,5 +17,6 @@ export class dependiente{
     @JoinColumn({name: 'cafeteria_id'})
     cafeteria_id:cafeteria;
 
-
+    @OneToMany(() => ipvGlobal, inveG => inveG.dependiente_id)
+    ipvsG: ipvGlobal[];
 }

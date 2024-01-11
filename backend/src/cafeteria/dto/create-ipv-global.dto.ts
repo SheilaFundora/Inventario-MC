@@ -15,6 +15,6 @@ export class CreateIPVGDto{
     otrosGastos:string;
     cafeteria_id:cafeteria;
     fechaIPV:string;
-    ipv_id:ipv;
-
+    dependiente_id:dependiente;
+    ipvs: ipv[];
 }

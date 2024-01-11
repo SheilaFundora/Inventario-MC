@@ -28,9 +28,10 @@ export class ipv{
     @JoinColumn({name: 'producto_id'})
     producto_id:producto;
     
+    @ManyToOne(() => ipvGlobal, ipvG_id => ipvG_id.ipvs, {eager: true,onDelete:'CASCADE',nullable:false})
+    @JoinColumn({name: 'ipvG_id'})
+    ipvG_id:ipvGlobal;
 
 
 
-    @OneToMany(() => ipvGlobal, inveG => inveG.ipv_id)
-    ipvsG: ipvGlobal[];
 }

@@ -14,8 +14,7 @@ export class CreateIPVDto{
     venta: number;
     subtotalEfectivo:string;
     existenciaFinal:number;
-    ipvsG:ipvGlobal[];
     producto_id:producto;
     estado:string;
-
+    ipvG_id:ipvGlobal;
 }

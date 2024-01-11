@@ -1,8 +1,11 @@
 import { Injectable, Body, Delete } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {Repository} from 'typeorm'
+import {EntityManager, Repository} from 'typeorm'
 import { ipvGlobal } from '../entities/ipvGlobal.entity';
 import { CreateIPVGDto } from '../dto/create-ipv-global.dto';
+import { dependiente } from '../entities/dependiente.entity';
+import { ipv } from '../entities/ipv.entity';
+import { CreateIPVDto } from '../dto/create-ipv.dto';
 
 
 
@@ -13,6 +16,7 @@ export class ipvGService {
 
     constructor(
         @InjectRepository(ipvGlobal) private ipvGRepo:Repository<ipvGlobal>,
+        @InjectRepository(ipv) private ipvRepo:Repository<ipv>,
 
     )
     {}
@@ -27,12 +31,38 @@ export class ipvGService {
         return this.ipvGRepo.findOneBy({id});
     }
 
-    async create(body:any){
+    async create(body:CreateIPVGDto){
         const newIPV = this.ipvGRepo.create(body);
-        return this.ipvGRepo.save(newIPV);
+        const transactionEntityManager = this.ipvGRepo.manager.transaction(
+            async (transactionalEntityManager: EntityManager) => {
+              const savedIpvGeneral = await transactionalEntityManager.save(newIPV);
+      
+              // Asocia detalles y guárdalos
+              const ipvDetalleEntities = body.ipvs.map((ipvDetalleData: CreateIPVDto) => {
+                const ipvDetalle = this.ipvRepo.create({
+                  ...ipvDetalleData,
+                  ipvG_id: savedIpvGeneral,
+                });
+                return ipvDetalle;
+              });
+      
+              await transactionalEntityManager.save(ipvDetalleEntities);
+            },
+          );
+      
+
     }
 
-    async update (id:number, body:any){
+
+
+
+
+
+
+
+
+
+    async update (id:number, body:CreateIPVGDto){
         const invG = await this.ipvGRepo.findOneBy({id});
         if (!invG) {
             throw new Error('id no encontrado');
@@ -40,7 +70,7 @@ export class ipvGService {
         
         
           invG.cafeteria_id = body.cafeteria_id;
-          invG.ipv_id=body.ipv_id;
+          invG.dependiente_id = body.dependiente_id;
         this.ipvGRepo.merge(invG, body);
         return this.ipvGRepo.save(invG);
     }
