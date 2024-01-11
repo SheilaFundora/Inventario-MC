@@ -55,4 +55,11 @@ export class cafeteriaService {
         return true;
     }
 
+    async getSalario(id: number)
+    {
+
+        const salario = (await this.cafeteriaRep.findOneBy({id})).salario;
+        return salario;
+    }
+
 }
