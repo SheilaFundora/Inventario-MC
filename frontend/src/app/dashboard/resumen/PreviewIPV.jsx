@@ -17,7 +17,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
 const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
-    console.log(ipvToView)
+    console.log('ipvToView', ipvToView)
     return (
         <div>
             <Dialog
@@ -50,10 +50,10 @@ const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
                 <DialogContent>
                     <div className='d-flex align-items-center justify-content-between'>
                         <Typography sx={{fontSize: 20}} gutterBottom>
-                            Dependiente: {ipvToView.nombreDependienta}
+                            Dependiente:{/* {ipvToView.dependiente_id.nombre}*/}
                         </Typography>
                         <Typography sx={{fontSize: 20}} gutterBottom>
-                            Cafeteria: {ipvToView.nombreCafeteria}
+                            Cafeteria: {ipvToView.cafeteria_id.nombre}
                         </Typography>
                     </div>
                     <div className='d-flex align-items-center justify-content-between'>
@@ -108,7 +108,7 @@ const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {ipvToView.data && ipvToView.data.map((row) => (
+                                        {/*{ipvToView.ipv_id && ipvToView.ipv_id.map((row) => (
                                             <TableRow key={row.id}>
                                                 <TableCell>{row.nombre}</TableCell>
                                                 <TableCell>{row.cantidad}</TableCell>
@@ -120,7 +120,7 @@ const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
                                                 <TableCell>{row.nombre}</TableCell>
                                             </TableRow>
                                         ))}
-
+*/}
                                     </TableBody>
                                 </Table>
                             </TableContainer>

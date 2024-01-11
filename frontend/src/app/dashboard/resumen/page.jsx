@@ -26,9 +26,6 @@ export default function BasicCard() {
                 process.env.NEXT_PUBLIC_API_HOST + ipvG_endpoint
             )
                 .then(response => {
-                    console.log(
-                        response
-                    )
                     setIpvG(response.data);
                 })
         }catch (error) {

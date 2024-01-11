@@ -5,7 +5,7 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {fetchData} from "@/helper/fetch";
-import {dependent_endpoint, ipv_endpoint, product_endpoint, store_endpoint} from "@/constants/apiRoutes";
+import {dependent_endpoint, ipv_endpoint, ipvG_endpoint, product_endpoint, store_endpoint} from "@/constants/apiRoutes";
 import Swal from "sweetalert2";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
@@ -13,7 +13,6 @@ import axios from "axios";
 const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [dependents, setDependents] = useState([]);
-    const [stores, setStores] = useState([]);
 
 
     useEffect(() => {
@@ -21,19 +20,6 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
     }, []);
 
     const getDataForm = async () => {
-        try{
-            await axios.get(
-                process.env.NEXT_PUBLIC_API_HOST + store_endpoint
-            )
-                .then(response => {
-                    setStores(response.data);
-                })
-
-        }catch (error) {
-            console.log(error)
-            await Swal.fire('Error', "Error del servidor", 'error');
-
-        }
         try{
             await axios.get(
                 process.env.NEXT_PUBLIC_API_HOST + dependent_endpoint
@@ -56,8 +42,20 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
         const total = ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0);
         data.total = total;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
+        data.ipv_id = ipvData;
 
-        try {
+        console.log(data)
+
+      /*  try {
+            const resp = await fetchData(ipvG_endpoint, data, "POST");
+            console.log(resp)
+        } catch (error) {
+            console.log(error)
+        }*/
+
+
+
+       /* try {
             //creando el ipv
             const resp = await fetchData(ipv_endpoint, ipvData, "POST");
             if (resp.status === 201) {
@@ -79,7 +77,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
 
         } catch (error) {
             console.log(error)
-        }
+        }*/
     }
 
     return (
@@ -139,6 +137,28 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
                                 })}
                                 error={errors.otrosGastos}
                                 helperText={errors.otrosGastos && errors.otrosGastos.message}
+                            />
+                        </div>
+                        <div className={'d-flex align-items-center justify-content-between mt-3'}>
+                            <Controller
+                                name={'dependiente_id'}
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) => (
+                                    <TextField
+                                        select
+                                        required={true}
+                                        label={'Dependiente'}
+                                        {...field}
+                                        sx={{ m: 2, width: '700px' }}
+                                    >
+                                        {dependents.map((option) => (
+                                            <MenuItem key={option.id} value={option.id}>
+                                                {option.nombre}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                )}
                             />
                             <TextField
                                 type='date'

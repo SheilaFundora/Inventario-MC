@@ -9,7 +9,6 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import {ipv} from "@/constants/apiRoutes";
 import Swal from "sweetalert2";
 import PreviewIPV from "@/app/dashboard/resumen/PreviewIPV";
 const DataTableIpv = ({ipvG, handleRefreshIpv}) => {
@@ -90,8 +89,8 @@ const DataTableIpv = ({ipvG, handleRefreshIpv}) => {
                            tableStyle={{minWidth: '50rem'}}
                            className="p-datatable-hgridlines"
                 >
-                    <Column field="nombreCafeteria" header="Cafeteria" sortable/>
-                    <Column field="nombreDependienta" header="Dependiente" sortable/>
+                    <Column field="cafeteria_id.nombre" header="Cafeteria" sortable/>
+                    <Column field="dependiente_id.nombre" header="Dependiente" sortable/>
                     <Column field="fechaIPV"
                             header="Fecha"
                             sortable
