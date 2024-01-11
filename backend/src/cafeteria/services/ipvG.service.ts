@@ -56,11 +56,7 @@ export class ipvGService {
 
 
 
-    async getIPV(id:number){
 
-      const ipvG = await this.ipvGRepo.findOneBy({id});
-      return ipvG.ipvs;
-    }
 
 
 

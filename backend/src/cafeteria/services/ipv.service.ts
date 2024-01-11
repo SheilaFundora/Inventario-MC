@@ -28,6 +28,21 @@ export class ipvService {
     }
 
 
+    async getIPV(id:number)
+    {
+    const arr = await this.ipvRepo.find();
+    let arregloIPV:ipv[]=[];
+    for  (var i of arr){
+        if (i.ipvG_id.id==id){
+
+            arregloIPV.push(i);
+           
+
+        }
+
+    }
+    return arregloIPV;
+    }
 
     async getEstado(): Promise<number[]> {
         
