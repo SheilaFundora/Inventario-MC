@@ -15,7 +15,6 @@ export class productoService {
 
     )
     {}
-
     findAll()
     {
     return  this.productoRep.find();
@@ -63,11 +62,15 @@ export class productoService {
     async findProdCaf(id:number)
     {
     const arr = await this.productoRep.find();
-    const arregloProducto: producto[] = [];
-    for (const i of arr){
-        if (i.cafeteria_id.id===id){
+    let arregloProducto:producto[]=[];
+    for  (var i of arr){
+        if (i.cafeteria_id.id==id){
+
             arregloProducto.push(i);
+           
+
         }
+
     }
     return arregloProducto;
     }

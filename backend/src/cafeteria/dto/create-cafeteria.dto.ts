@@ -11,7 +11,7 @@ export class CreateCafeteriaDto{
     id:number;
     nombre: string;
     salario: string;
-    ipvs: ipv[];
+    ipvGs: ipvGlobal[];
     deps: dependiente[];
     prods: producto[];
 

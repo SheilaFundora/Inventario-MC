@@ -26,8 +26,8 @@ export class dependienteService {
     async findByCaf(id:number)
     {
         const arr = await this.dependienteRep.find();
-        const arreglodeps: dependiente[] = [];
-        for (const i of arr){
+        let arreglodeps: dependiente[] = [];
+        for (var i of arr){
             if (i.cafeteria_id.id===id){
                 arreglodeps.push(i);
             }

@@ -39,7 +39,8 @@ export class ipvGService {
           }
         
         
-        invG.ipv_id=body.ipv_id;
+          invG.cafeteria_id = body.cafeteria_id;
+          invG.ipv_id=body.ipv_id;
         this.ipvGRepo.merge(invG, body);
         return this.ipvGRepo.save(invG);
     }

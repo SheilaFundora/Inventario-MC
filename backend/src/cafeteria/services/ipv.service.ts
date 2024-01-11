@@ -67,7 +67,6 @@ export class ipvService {
 
 
         inv.producto_id = body.producto_id;
-        inv.cafeteria_id = body.cafeteria_id;
         this.ipvRepo.merge(inv, body);
         return this.ipvRepo.save(inv);
     }

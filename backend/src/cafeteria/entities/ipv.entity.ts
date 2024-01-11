@@ -28,9 +28,7 @@ export class ipv{
     @JoinColumn({name: 'producto_id'})
     producto_id:producto;
     
-    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.ipvs, {eager: true,onDelete:'CASCADE',nullable:false})
-    @JoinColumn({name: 'cafeteria_id'})
-    cafeteria_id:cafeteria;
+
 
 
     @OneToMany(() => ipvGlobal, inveG => inveG.ipv_id)

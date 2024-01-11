@@ -17,5 +17,5 @@ export class CreateIPVDto{
     ipvsG:ipvGlobal[];
     producto_id:producto;
     estado:string;
-    cafeteria_id:cafeteria;
+
 }

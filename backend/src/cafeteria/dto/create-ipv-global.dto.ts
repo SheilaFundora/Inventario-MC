@@ -13,7 +13,7 @@ export class CreateIPVGDto{
     salario:string;
     totalEfectivo:string;
     otrosGastos:string;
-
+    cafeteria_id:cafeteria;
     fechaIPV:string;
     ipv_id:ipv;
 

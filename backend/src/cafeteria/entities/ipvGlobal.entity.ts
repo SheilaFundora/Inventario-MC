@@ -21,7 +21,9 @@ export class ipvGlobal{
     fechaIPV: string;
     
 
-
+    @ManyToOne(() => cafeteria, (cafeteria_id) => cafeteria_id.ipvGs, {eager: true,onDelete:'CASCADE',nullable:false})
+    @JoinColumn({name: 'cafeteria_id'})
+    cafeteria_id:cafeteria;
 
 
 

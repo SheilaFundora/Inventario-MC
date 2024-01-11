@@ -13,8 +13,8 @@ export class cafeteria{
     nombre:string;
     @Column({nullable:false, type:'float'})
     salario:string;
-    @OneToMany(() => ipv, (ipv) => ipv.cafeteria_id)
-    ipvs: ipv[];
+    @OneToMany(() => ipvGlobal, (ipvG) => ipvG.cafeteria_id)
+    ipvGs: ipvGlobal[];
     @OneToMany(() => producto, (prod) => prod.cafeteria_id)
     prods: producto[];
     @OneToMany(() => dependiente, (dep) => dep.cafeteria_id)
