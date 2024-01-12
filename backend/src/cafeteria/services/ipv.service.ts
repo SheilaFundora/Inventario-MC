@@ -19,7 +19,7 @@ export class ipvService {
     ) { }
 
     async findAll(): Promise<ipv[]> {
-        return this.ipvRepo.find({ relations: ['ipvsG'] });
+        return this.ipvRepo.find();
     }
 
     async getId(id: number): Promise<ipv> {
