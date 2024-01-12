@@ -1,12 +1,8 @@
-PUT http://localhost:5000/api/cafeteria/dependiente/17/
+GET http://localhost:5000/api/cafeteria/ipvG
 
 Content-Type: application/json
 
-{
-"nombre":"sheila fundora galloso",
-"numeroT":"2222",
-"cafeteria_id":2
-}
+
 
 
 ###

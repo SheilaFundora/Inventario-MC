@@ -5,14 +5,22 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {fetchData} from "@/helper/fetch";
-import {dependent_endpoint, ipv_endpoint, ipvG_endpoint, product_endpoint, store_endpoint} from "@/constants/apiRoutes";
+import {
+    dependent_endpoint, dependent_store_endpoint,
+    ipv_endpoint,
+    ipvG_endpoint,
+    product_endpoint,
+    salary_endpoint,
+    store_endpoint
+} from "@/constants/apiRoutes";
 import Swal from "sweetalert2";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
 
-const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) => {
+const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, store_id}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [dependents, setDependents] = useState([]);
+    const [salary, setSalary] = useState([]);
 
 
     useEffect(() => {
@@ -20,9 +28,24 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
     }, []);
 
     const getDataForm = async () => {
+        const salary_to_id = store_endpoint + '/' + store_id + '/';
+        const dependent_to_id = dependent_store_endpoint  + '/' + store_id + '/';
+
         try{
             await axios.get(
-                process.env.NEXT_PUBLIC_API_HOST + dependent_endpoint
+                process.env.NEXT_PUBLIC_API_HOST + salary_to_id
+            )
+                .then(response => {
+                    setSalary(response.data);
+                })
+
+        }catch (error) {
+            await Swal.fire('Error', "Error del servidor", 'error');
+        }
+
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + dependent_to_id
             )
                 .then(response => {
                     setDependents(response.data);
@@ -35,49 +58,27 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
     }
 
     const handleSubmitIPV =  async (data) => {
-        //pasos:
-        //2- Quedarme con el [id] del q esta en estado false, y ponerlo en ipv_id
-        //3- Crear el ipv general
-        //4- Hacer el patch de ese ipv y ponerlo en true y cerrar el modal
         const total = ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0);
         data.total = total;
-        data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
-        data.ipv_id = ipvData;
+        data.totalEfectivo = total - data.transferencia - data.otrosGastos;
+        data.ipvs = ipvData;
+        data.salario = total * salary.salario;
+        data.cafeteria_id = store_id;
 
-        console.log(data)
 
-      /*  try {
+        try {
             const resp = await fetchData(ipvG_endpoint, data, "POST");
-            console.log(resp)
-        } catch (error) {
-            console.log(error)
-        }*/
-
-
-
-       /* try {
-            //creando el ipv
-            const resp = await fetchData(ipv_endpoint, ipvData, "POST");
             if (resp.status === 201) {
                 handleRefreshIPV();
+                handleOpenSave();
+                await Swal.fire('Exito', "Se ha creado correctamente el dependiente", 'success');
+            }else{
+                await Swal.fire('Error', "Error del servidor", 'error');
             }
-            //quedandome con las [id] de los ipv con estado false
-            try {
-                //creando el ipv
-                const resp = await fetchData(ipv_endpoint, ipvData, "POST");
-                if (resp.status === 201) {
-                    handleRefreshIPV();
-                }
-                //quedandome con las [id] de los ipv con estado false
-
-
-            } catch (error) {
-                console.log(error)
-            }
-
         } catch (error) {
             console.log(error)
-        }*/
+        }
+
     }
 
     return (

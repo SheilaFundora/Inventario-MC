@@ -85,8 +85,6 @@ const Page = ({params}) => {
                 process.env.NEXT_PUBLIC_API_HOST + endpoint
             )
                 .then(response => {
-                    console.log(process.env.NEXT_PUBLIC_API_HOST + endpoint)
-                    console.log(response.data)
                     const newData = response.data.map((objeto) => ({
                         ...objeto,
                         entrada: 0,
@@ -215,6 +213,7 @@ const Page = ({params}) => {
                     openSave={openSave}
                     ipvData={ipvData}
                     handleRefreshIPV={handleRefreshIPV}
+                    store_id={params.id}
                 />
             }
         </div>
