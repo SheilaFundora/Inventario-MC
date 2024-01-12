@@ -26,6 +26,7 @@ export default function BasicCard() {
                 process.env.NEXT_PUBLIC_API_HOST + ipvG_endpoint
             )
                 .then(response => {
+                    console.log(response)
                     setIpvG(response.data);
                 })
         }catch (error) {
@@ -38,9 +39,9 @@ export default function BasicCard() {
 
             <h4 className={'pt-5 text-secondary ms-1'}>IPV </h4>
 
-            <DataTableIpv ipvG={ipvG}
+            {/*<DataTableIpv ipvG={ipvG}
                           handleRefreshIpv={handleRefreshIpv}
-            />
+            />*/}
 
         </div>
     );

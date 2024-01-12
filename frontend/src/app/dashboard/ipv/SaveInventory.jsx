@@ -5,7 +5,14 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {fetchData} from "@/helper/fetch";
-import {dependent_endpoint, ipv_endpoint, ipvG_endpoint, product_endpoint, store_endpoint} from "@/constants/apiRoutes";
+import {
+    dependent_endpoint, dependent_store_endpoint,
+    ipv_endpoint,
+    ipvG_endpoint,
+    product_endpoint,
+    salary_endpoint,
+    store_endpoint
+} from "@/constants/apiRoutes";
 import Swal from "sweetalert2";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
@@ -13,7 +20,7 @@ import axios from "axios";
 const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, store_id}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [dependents, setDependents] = useState([]);
-    const [store, setStore] = useState([]);
+    const [salary, setSalary] = useState([]);
 
 
     useEffect(() => {
@@ -21,23 +28,27 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
     }, []);
 
     const getDataForm = async () => {
+        const salary_to_id = store_endpoint + '/' + store_id + '/';
+        const dependent_to_id = dependent_store_endpoint  + '/' + store_id + '/';
+
         try{
             await axios.get(
-                process.env.NEXT_PUBLIC_API_HOST + store_endpoint
+                process.env.NEXT_PUBLIC_API_HOST + salary_to_id
             )
                 .then(response => {
-                    setStore(response.data);
+                    setSalary(response.data);
                 })
 
         }catch (error) {
             await Swal.fire('Error', "Error del servidor", 'error');
-
         }
+
         try{
             await axios.get(
                 process.env.NEXT_PUBLIC_API_HOST + dependent_endpoint
             )
                 .then(response => {
+                    console.log(response)
                     setDependents(response.data);
                 })
 
@@ -49,18 +60,22 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
 
     const handleSubmitIPV =  async (data) => {
         const total = ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0);
-        const salary = store
-            .filter(elemento => elemento.id === store_id)
-            .map(elemento => elemento.salario);
-
         data.total = total;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos;
         data.ipvs = ipvData;
-        data.salario = ipvData * salary;
+        data.salario = total * salary.salario;
+        data.cafeteria_id = store_id;
+
 
         try {
             const resp = await fetchData(ipvG_endpoint, data, "POST");
-            console.log(resp)
+            if (resp.status === 201) {
+                handleRefreshIPV();
+                handleOpenSave();
+                await Swal.fire('Exito', "Se ha creado correctamente el dependiente", 'success');
+            }else{
+                await Swal.fire('Error', "Error del servidor", 'error');
+            }
         } catch (error) {
             console.log(error)
         }
