@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Accordion,
     AccordionDetails,
@@ -14,10 +14,37 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {dependent_store_endpoint, ipv_arr_endpoint, store_endpoint} from "@/constants/apiRoutes";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 
 const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
-    console.log('ipvToView', ipvToView)
+    const [ipvs, setIpvs] = useState([]);
+
+
+    useEffect(() => {
+        getDataForm();
+    }, []);
+
+    const getDataForm = async () => {
+        const endpoint = ipv_arr_endpoint + '/' + ipvToView.id + '/';
+
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + endpoint
+            )
+                .then(response => {
+                    setIpvs(response.data);
+                })
+
+        }catch (error) {
+            await Swal.fire('Error', "Error del servidor", 'error');
+        }
+    }
+
+    console.log(ipvs)
+
     return (
         <div>
             <Dialog
@@ -70,14 +97,12 @@ const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
                         <Typography sx={{fontSize: 20}} gutterBottom>
                             Salario: ${ipvToView.salario}
                         </Typography>
-                        <Typography sx={{fontSize: 20}} gutterBottom>
-                            Porciento en salario {ipvToView.porcientoSalario}%
+                        <Typography sx={{fontSize: 18, fontWeight: 'bold' }} gutterBottom >
+                            Dinero total: ${ipvToView.total}
                         </Typography>
                     </div>
 
-                    <Typography sx={{fontSize: 18, fontWeight: 'bold' }} gutterBottom >
-                        Dinero total: ${ipvToView.total}
-                    </Typography>
+
 
                     <Accordion
                         sx={{
@@ -108,19 +133,20 @@ const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {/*{ipvToView.ipv_id && ipvToView.ipv_id.map((row) => (
+                                        {ipvs && ipvs.map((row) => (
                                             <TableRow key={row.id}>
-                                                <TableCell>{row.nombre}</TableCell>
-                                                <TableCell>{row.cantidad}</TableCell>
-                                                <TableCell>{row.precio}</TableCell>
+                                                <TableCell>{row.producto_id && row.producto_id.nombre}</TableCell>
+                                                <TableCell>{row.producto_id && row.producto_id.cantidad}</TableCell>
+                                                <TableCell>{row.producto_id && row.producto_id.precio}</TableCell>
                                                 <TableCell>{row.entrada}</TableCell>
                                                 <TableCell>{row.traslado}</TableCell>
                                                 <TableCell>{row.venta}</TableCell>
                                                 <TableCell>{row.merma}</TableCell>
-                                                <TableCell>{row.nombre}</TableCell>
+                                                <TableCell>{row.subtotalEfectivo}</TableCell>
+                                                <TableCell>{row.existenciaFinal}</TableCell>
                                             </TableRow>
                                         ))}
-*/}
+
                                     </TableBody>
                                 </Table>
                             </TableContainer>

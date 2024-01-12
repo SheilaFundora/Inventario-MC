@@ -62,7 +62,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
         data.total = total;
         data.totalEfectivo = total - data.transferencia - data.otrosGastos;
         data.ipvs = ipvData;
-        data.salario = total * salary.salario;
+        data.salario = (total * salary.salario) / 100;
         data.cafeteria_id = store_id;
 
 

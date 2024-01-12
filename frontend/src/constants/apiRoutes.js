@@ -8,6 +8,8 @@ export const salary_endpoint = '/api/cafeteria/salario'
 
 export const dependent_store_endpoint = '/api/cafeteria/dependienteCafeteria'
 
+export const ipv_arr_endpoint = '/api/cafeteria/ipvarr'
+
 
 
 
