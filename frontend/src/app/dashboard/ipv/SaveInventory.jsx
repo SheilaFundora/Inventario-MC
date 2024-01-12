@@ -45,10 +45,9 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
 
         try{
             await axios.get(
-                process.env.NEXT_PUBLIC_API_HOST + dependent_endpoint
+                process.env.NEXT_PUBLIC_API_HOST + dependent_to_id
             )
                 .then(response => {
-                    console.log(response)
                     setDependents(response.data);
                 })
 

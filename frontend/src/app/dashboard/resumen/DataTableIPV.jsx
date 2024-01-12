@@ -83,7 +83,7 @@ const DataTableIpv = ({ipvG, handleRefreshIpv}) => {
     return (
         <div>
             <div className="datatable mt-4">
-               {/* <DataTable value={ipvData || []}
+                <DataTable value={ipvData || []}
                            paginator rows={5}
                            rowsPerPageOptions={[5, 10, 25, 50]}
                            tableStyle={{minWidth: '50rem'}}
@@ -106,7 +106,7 @@ const DataTableIpv = ({ipvG, handleRefreshIpv}) => {
                     <Column field="total" header="Total" sortable/>
                     <Column field="salario" header="salario" sortable/>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}/>
-                </DataTable>*/}
+                </DataTable>
             </div>
 
             <Dialog

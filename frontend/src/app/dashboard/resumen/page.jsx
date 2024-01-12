@@ -39,9 +39,9 @@ export default function BasicCard() {
 
             <h4 className={'pt-5 text-secondary ms-1'}>IPV </h4>
 
-            {/*<DataTableIpv ipvG={ipvG}
+            <DataTableIpv ipvG={ipvG}
                           handleRefreshIpv={handleRefreshIpv}
-            />*/}
+            />
 
         </div>
     );

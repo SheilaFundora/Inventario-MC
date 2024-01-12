@@ -25,7 +25,7 @@ const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
                 aria-labelledby="customized-dialog-title"
                 open={openView}
                 className={'p-5'}
-                maxWidth={'sm'}
+                maxWidth={'md'}
                 fullWidth={true}
             >
 
@@ -50,7 +50,7 @@ const PreviewIPV = ({openView, handleOpenView, ipvToView}) => {
                 <DialogContent>
                     <div className='d-flex align-items-center justify-content-between'>
                         <Typography sx={{fontSize: 20}} gutterBottom>
-                            Dependiente:{/* {ipvToView.dependiente_id.nombre}*/}
+                            Dependiente: {ipvToView.dependiente_id.nombre}
                         </Typography>
                         <Typography sx={{fontSize: 20}} gutterBottom>
                             Cafeteria: {ipvToView.cafeteria_id.nombre}
