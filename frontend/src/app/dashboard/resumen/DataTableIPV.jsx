@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import Swal from "sweetalert2";
 import PreviewIPV from "@/app/dashboard/resumen/PreviewIPV";
+import {ipvG_endpoint} from "@/constants/apiRoutes";
 const DataTableIpv = ({ipvG, handleRefreshIpv}) => {
     const [ipvData, setIpvData] =  React.useState([]);
     const [openView, setOpenView] = React.useState(false);
@@ -63,7 +64,7 @@ const DataTableIpv = ({ipvG, handleRefreshIpv}) => {
     }
 
     const handleDeleteIPV= async () => {
-        const endpoint = ipv + '/' + id + '/';
+        const endpoint = ipvG_endpoint + '/' + id + '/';
         try{
             const response = await axios.delete(process.env.NEXT_PUBLIC_API_HOST + endpoint)
 
