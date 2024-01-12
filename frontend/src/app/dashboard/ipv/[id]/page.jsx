@@ -215,6 +215,7 @@ const Page = ({params}) => {
                     openSave={openSave}
                     ipvData={ipvData}
                     handleRefreshIPV={handleRefreshIPV}
+                    store_id={params.id}
                 />
             }
         </div>

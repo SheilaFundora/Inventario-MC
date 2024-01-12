@@ -10,9 +10,10 @@ import Swal from "sweetalert2";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
 
-const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) => {
+const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, store_id}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [dependents, setDependents] = useState([]);
+    const [store, setStore] = useState([]);
 
 
     useEffect(() => {
@@ -20,6 +21,18 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
     }, []);
 
     const getDataForm = async () => {
+        try{
+            await axios.get(
+                process.env.NEXT_PUBLIC_API_HOST + store_endpoint
+            )
+                .then(response => {
+                    setStore(response.data);
+                })
+
+        }catch (error) {
+            await Swal.fire('Error', "Error del servidor", 'error');
+
+        }
         try{
             await axios.get(
                 process.env.NEXT_PUBLIC_API_HOST + dependent_endpoint
@@ -35,49 +48,23 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV}) =>
     }
 
     const handleSubmitIPV =  async (data) => {
-        //pasos:
-        //2- Quedarme con el [id] del q esta en estado false, y ponerlo en ipv_id
-        //3- Crear el ipv general
-        //4- Hacer el patch de ese ipv y ponerlo en true y cerrar el modal
         const total = ipvData.reduce((total, ipvData) => total + ipvData.subtotalEfectivo, 0);
+        const salary = store
+            .filter(elemento => elemento.id === store_id)
+            .map(elemento => elemento.salario);
+
         data.total = total;
-        data.totalEfectivo = total - data.transferencia - data.otrosGastos ;
-        data.ipv_id = ipvData;
+        data.totalEfectivo = total - data.transferencia - data.otrosGastos;
+        data.ipvs = ipvData;
+        data.salario = ipvData * salary;
 
-        console.log(data)
-
-      /*  try {
+        try {
             const resp = await fetchData(ipvG_endpoint, data, "POST");
             console.log(resp)
         } catch (error) {
             console.log(error)
-        }*/
+        }
 
-
-
-       /* try {
-            //creando el ipv
-            const resp = await fetchData(ipv_endpoint, ipvData, "POST");
-            if (resp.status === 201) {
-                handleRefreshIPV();
-            }
-            //quedandome con las [id] de los ipv con estado false
-            try {
-                //creando el ipv
-                const resp = await fetchData(ipv_endpoint, ipvData, "POST");
-                if (resp.status === 201) {
-                    handleRefreshIPV();
-                }
-                //quedandome con las [id] de los ipv con estado false
-
-
-            } catch (error) {
-                console.log(error)
-            }
-
-        } catch (error) {
-            console.log(error)
-        }*/
     }
 
     return (
