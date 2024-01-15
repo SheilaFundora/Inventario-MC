@@ -61,28 +61,30 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
     };
 
     const handleSubmitProduct = async (data) => {
+        if(  data.precio < data.precioC ) {
+            setErrorMessage('EL precio de venta no puede ser menor al de compra ')
+        }else{
+            try {
+                const resp = await fetchData(product_endpoint, data, "POST");
 
-        try {
-            const resp = await fetchData(product_endpoint, data, "POST");
+                if (resp.status === 400) {
+                    setErrorMessage('El producto ya existe')
 
-            if (resp.status === 400) {
-                setErrorMessage('El producto ya existe')
-
-            }else{
-                if (resp.status === 201) {
-                    handleClick()
-                } else {
-                    setErrorMessage('Error de servidor')
+                }else{
+                    if (resp.status === 201) {
+                        handleClick()
+                    } else {
+                        setErrorMessage('Error de servidor')
+                    }
                 }
+            } catch (error) {
+                console.log(error)
             }
-        } catch (error) {
-            console.log(error)
+
+            reset();
+            handleRefreshProducts();
+            setLoading(!loading);
         }
-
-        reset();
-        handleRefreshProducts();
-        setLoading(!loading);
-
     }
 
     const handleCancel = () => {
@@ -170,7 +172,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     {...register('precio', {
                                         required: 'Campo requerido',
                                         pattern: {
-                                            value: /^\d+$/,
+                                            value: /^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/,
                                             message: 'Ingrese solo números',
                                         },
                                     })}
@@ -184,7 +186,7 @@ const AddProduct = ({openAddProduct, handleOpenAddProduct, handleRefreshProducts
                                     {...register('precioC', {
                                         required: 'Campo requerido',
                                         pattern: {
-                                            value: /^\d+$/,
+                                            value: /^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/,
                                             message: 'Ingrese solo números',
                                         },
                                     })}
