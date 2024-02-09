@@ -64,14 +64,9 @@ export class ipvService {
 
 
 
-        //        const producto = await this.productRepo.findOneBy(body.producto_id)
-        //     if (producto.cantidad >=body.venta){
-        //       producto.cantidad=producto.cantidad - body.venta;
-        //     this.updateP(producto.id,producto);
-        //}
-        //else throw new Error('No hay suficientes productos en el inventario')
         const newIPV = this.ipvRepo.create(body);
-        return this.ipvRepo.save(newIPV);
+        this.ipvRepo.save(newIPV);
+
     }
 
     async update(id: number, body: CreateIPVDto) {
@@ -107,14 +102,7 @@ export class ipvService {
         return true;
     }
 
-    async updateP(id: number, body: any) {
-        const product = await this.productRepo.findOneBy({ id });
-        if (!product) {
-            throw new Error('id no encontrado');
-        }
-        this.productRepo.merge(product, body);
-        return this.productRepo.save(product);
-    }
+
 }
 
 

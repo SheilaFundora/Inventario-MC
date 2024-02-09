@@ -6,6 +6,7 @@ import { CreateIPVGDto } from '../dto/create-ipv-global.dto';
 import { dependiente } from '../entities/dependiente.entity';
 import { ipv } from '../entities/ipv.entity';
 import { CreateIPVDto } from '../dto/create-ipv.dto';
+import { producto } from '../entities/producto.entity';
 
 
 
@@ -17,7 +18,7 @@ export class ipvGService {
     constructor(
         @InjectRepository(ipvGlobal) private ipvGRepo:Repository<ipvGlobal>,
         @InjectRepository(ipv) private ipvRepo:Repository<ipv>,
-
+        @InjectRepository(producto) private productRepo: Repository<producto>,
     )
     {}
 
@@ -49,12 +50,24 @@ export class ipvGService {
               await transactionalEntityManager.save(ipvDetalleEntities);
             },
           );
-      
+          const ipv =  await this.ipvRepo.find();
+          const productos = await this.productRepo.find();
+          for (var i of ipv){
+              for (var o of productos){
+                  if (i.producto_id.id == o.id && i.venta <= o.cantidad){
+                      this.updateCantidades(o.id,i.venta)
+                  }
+              }
+          }
 
     }
 
 
-
+    async updateCantidades(id: number, cantidad:number) {
+      const product = await this.productRepo.findOneBy({ id });
+      product.cantidad = product.cantidad - cantidad;
+      return this.productRepo.save(product);
+  }
 
 
 

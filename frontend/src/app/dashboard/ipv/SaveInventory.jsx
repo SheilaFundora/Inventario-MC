@@ -17,19 +17,10 @@ import Swal from "sweetalert2";
 import {Controller, useForm} from "react-hook-form";
 import axios from "axios";
 
-const getCurrentDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Ajusta el formato del mes (agregando un cero al principio si es necesario)
-    const day = today.getDate().toString().padStart(2, '0'); // Ajusta el formato del día (agregando un cero al principio si es necesario)
-    return `${year}-${month}-${day}`;
-};
-
 const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, store_id}) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm();
     const [dependents, setDependents] = useState([]);
     const [salary, setSalary] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
 
 
     useEffect(() => {
@@ -74,32 +65,18 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
         data.salario = (total * salary.salario) / 100;
         data.cafeteria_id = store_id;
 
-        const sumaTotal = parseInt(data.transferencia) + parseInt(data.otrosGastos);
 
-        console.log(sumaTotal)
         try {
-            switch (true) {
-                case data.transferencia > data.total:
-                    setErrorMessage('La transferencia tiene que ser menor que total');
-                    break;
-                case data.otrosGastos > data.total:
-                    setErrorMessage('Otros gastos tiene que ser menor que total');
-                    break;
-                case data.total < sumaTotal:
-                    setErrorMessage('El total debe ser mayor que transferencia + otros gastos');
-                    break;
-                default:
-                    const resp = await fetchData(ipvG_endpoint, data, 'POST');
-                    if (resp.status === 201) {
-                        handleRefreshIPV();
-                        handleOpenSave();
-                        await Swal.fire('Éxito', 'Se ha creado correctamente el dependiente', 'success');
-                    } else {
-                        await Swal.fire('Error', 'Error del servidor', 'error');
-                    }
+            const resp = await fetchData(ipvG_endpoint, data, "POST");
+            if (resp.status === 201) {
+                handleRefreshIPV();
+                handleOpenSave();
+                await Swal.fire('Exito', "Se ha creado correctamente el dependiente", 'success');
+            }else{
+                await Swal.fire('Error', "Error del servidor", 'error');
             }
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
 
     }
@@ -140,7 +117,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
                                 {...register('transferencia', {
                                     required: 'Campo requerido',
                                     pattern: {
-                                        value: /^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/,
+                                        value: /^\d+$/,
                                         message: 'Ingrese solo números',
                                     },
                                 })}
@@ -155,7 +132,7 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
                                 {...register('otrosGastos', {
                                     required: 'Campo requerido',
                                     pattern: {
-                                        value: /^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/,
+                                        value: /^\d+$/,
                                         message: 'Ingrese solo números',
                                     },
                                 })}
@@ -186,9 +163,9 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
                             />
                             <TextField
                                 type='date'
-                                sx={{ m: 2, width: '700px' }}
+                                sx={{m: 2, width: '700px'}}
                                 {...register('fechaIPV', {
-                                    value: getCurrentDate(),
+                                    required: 'Campo requerido',
                                 })}
                                 error={errors.fechaIPV}
                                 helperText={errors.fechaIPV && errors.fechaIPV.message}
@@ -203,7 +180,6 @@ const SaveInventory = ({handleOpenSave, openSave, ipvData, handleRefreshIPV, sto
                             </Typography>
                         </div>
 
-                        {errorMessage && <div className='error-message text-danger text-start ms-4'>{errorMessage}</div>}
 
                         <DialogActions sx={{pb: 3, justifyContent: 'center'}}>
                             <Button autoFocus onClick={handleOpenSave} variant="contained" color='error'>

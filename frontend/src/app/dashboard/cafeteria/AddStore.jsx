@@ -80,11 +80,11 @@ const AddStore = ({openAddStore, setLoading, loading, handleOpenAddStore, handle
                                 {...register('salario', {
                                     required: 'Campo requerido',
                                     pattern: {
-                                        value: /^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/,
+                                        value: /^\d+$/,
                                         message: 'Ingrese solo números',
                                     },
                                 })}
-                                error={!!errors.salario}
+                                error={errors.salario}
                                 helperText={errors.salario && errors.salario.message}
                             />
                         </div>

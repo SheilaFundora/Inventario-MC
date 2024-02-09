@@ -1,0 +1,21 @@
+{
+  "name": "inventario-mc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "start.js",
+  "scripts": {
+    "package": "pkg -t node16.16.0-win-x64 -o myapp start.js",
+    "start": "node start.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
+  "pkg": {
+    "targets": "node16.16.0-win-x64",
+    "outputPath": "dist",
+    "outputName": "myapp"
+  }
+}
